@@ -5,30 +5,31 @@ class GameScene extends Phaser.Scene {
    * Load any assets you might need here!
    */
   preload() {
-    this.load.spritesheet("player", "assets/player2.png", {
+    this.load.setPath("/assets/");
+    this.load.spritesheet("player", "player2.png", {
       frameWidth: 20,
       frameHeight: 20,
     });
 
     // TODO 1: load the tileset and tilemap with keys of "tileset" and "map" respectively.
-    this.load.image("tileset", "assets/tileset.png");
-    this.load.tilemapTiledJSON("map", "assets/map.json");
+    this.load.image("tileset", "tileset.png");
+    this.load.tilemapTiledJSON("map", "my_map3.json");
     
 
 
-    this.load.image("coin", "assets/coin.png");
-    this.load.image("enemy", "assets/enemy.png");
+    this.load.image("coin", "coin.png");
+    this.load.image("enemy", "enemy.png");
 
 
-    this.load.image("patient1", "assets/enemy.png");
-    this.load.image("patient2", "assets/enemy.png");
-    this.load.image("patient3", "assets/enemy.png");
-    this.load.image("patient4", "assets/enemy.png");
+    this.load.image("patient1", "enemy.png");
+    this.load.image("patient2", "enemy.png");
+    this.load.image("patient3", "enemy.png");
+    this.load.image("patient4", "enemy.png");
 
 
-    this.load.audio("jump", ["assets/jump.ogg", "assets/jump.mp3"]);
-    this.load.audio("coin", ["assets/coin.ogg", "assets/coin.mp3"]);
-    this.load.audio("dead", ["assets/dead.ogg", "assets/dead.mp3"]);
+    this.load.audio("jump", ["jump.ogg", "jump.mp3"]);
+    this.load.audio("coin", ["coin.ogg", "coin.mp3"]);
+    this.load.audio("dead", ["dead.ogg", "dead.mp3"]);
     
   }
 
@@ -788,7 +789,7 @@ class GameScene extends Phaser.Scene {
 const config = {
   type: Phaser.AUTO,
   width: 800,
-  height: 560,
+  height: 760,
   scene: GameScene,
   physics: {
     default: "arcade",
@@ -797,3 +798,4 @@ const config = {
 };
 
 const game = new Phaser.Game(config);
+

@@ -9,6 +9,15 @@ A simple game built with Phaser for Blueprint 2025's game development track.
 3. `npm install`
 4. `npm start`
 
+## Static Assets
+
+This project uses `parcel-reporter-static-files-copy` via `.parcelrc`.
+
+- Source static files live in `static/assets`.
+- At build/serve time they are copied to `dist/assets`.
+- Runtime paths in code should use `assets/...` (for example, `assets/player2.png`), not `static/assets/...`.
+- If `staticOutPath` changes, runtime URL paths change accordingly.
+
 ## Demo
 
 The game can be played here: https://supercoinbox.tcw.sh/
