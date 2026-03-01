@@ -12,7 +12,7 @@ class GameScene extends Phaser.Scene {
 
     // TODO 1: load the tileset and tilemap with keys of "tileset" and "map" respectively.
     this.load.image("tileset", "assets/tileset.png");
-    this.load.tilemapTiledJSON("map", "assets/map.json");
+    this.load.tilemapTiledJSON("map", "assets/my_map6.json");
     
 
 
@@ -157,7 +157,7 @@ class GameScene extends Phaser.Scene {
     let map = this.add.tilemap("map");
     let tileset = map.addTilesetImage("tileset", "tileset");
     this.walls = map.createLayer("Level 1", tileset);
-    this.walls.setCollision(1);
+    this.walls.setCollisionByExclusion(-1);
 
   }
 

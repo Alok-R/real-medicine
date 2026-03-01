@@ -1,0 +1,28 @@
+{
+    "Map/SizeTest": {
+        "height": 4300,
+        "width": 2
+    },
+    "activeFile": "",
+    "expandedProjectPaths": [
+    ],
+    "fileStates": {
+    },
+    "last.exportedFilePath": "C:/Users/david/Python/real-medicine/assets",
+    "last.imagePath": "C:/Users/david/Python/real-medicine/assets",
+    "map.height": 38,
+    "map.lastUsedExportFilter": "All Files (*)",
+    "map.tileHeight": 20,
+    "map.tileWidth": 20,
+    "map.width": 40,
+    "openFiles": [
+    ],
+    "project": "my_map5.json.tiled-project",
+    "recentFiles": [
+    ],
+    "tileset.embedInMap": true,
+    "tileset.tileSize": {
+        "height": 20,
+        "width": 20
+    }
+}
