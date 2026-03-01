@@ -1,30 +1,137 @@
 import Phaser from "phaser";
+const problemSeverityMap = {
+  "Runny Nose, \nTreatment 1 = Antibiotics, \nTreatment 2 = Antihistamine, \nTreatment 3 = Decongestant": {
+    sev1: 2,
+    sevs1: 3
+  },
+  
 
+  "Cough, \nTreatment 1 = Honey and fluids, \nTreatment 2 = Antibiotics, \nTreatment 3 = Cough Suppressant": {
+    sev1: 3,
+    sevs1: 1
+  },
+
+  "Seasonal Allergies, \nTreatment 1 = Antihistamine, \nTreatment 2 = Steroid nasal spray, \nTreatment 3 = Antibiotics": {
+    sev1: 1,
+    sevs1: 2
+  },
+
+  "Skin rashes (non-rapidly spreading), \nTreatment 1 = Insulin, \nTreatment 2 = Topical steroid cream, \nTreatment 3 = Steroid Nasal Spray": {
+    sev1: 2,
+    sevs1: 3
+  },
+
+  "Wheezing, \nTreatment 1 = Steroids, \nTreatment 2 = Ice Pack, \nTreatment 3 = Bronchodilator Inhaler": {
+    sev1: 3,
+    sevs1: 1
+  },
+
+  "Dehydration, \nTreatment 1 = IV Fluids, \nTreatment 2 = Oral rehydration, \nTreatment 3 = Cough Syrup": {
+    sev1: 1,
+    sevs1: 2
+  },
+
+  "Eye Irritation, \nTreatment 1 = Ear Drops, \nTreatment 2 = Saline Irrigation, \nTreatment 3 = Artificial Tears": {
+    sev1: 2,
+    sevs1: 3
+  },
+
+  "Minor Cuts (stitches required), \nTreatment 1 = Sterile Dressing, \nTreatment 2 = Antacid, \nTreatment 3 = Clean and suture": {
+    sev1: 3,
+    sevs1: 1
+  },
+
+  "Sprains, \nTreatment 1 = RICE protocol, \nTreatment 2 = Ankle Brace, \nTreatment 3 = Antibiotics": {
+    sev1: 1,
+    sevs1: 2
+  },
+
+  "Sinus Pain, \nTreatment 1 = Chemotherapy, \nTreatment 2 = Decongestant, \nTreatment 3 = Nasal Steroid": {
+    sev1: 2,
+    sevs1: 3
+  },
+
+  "Vomiting (no severe dehydration), \nTreatment 1 = Oral Fluids, \nTreatment 2 = Cast, \nTreatment 3 = Antiemetic": {
+    sev1: 3,
+    sevs1: 1
+  },
+
+  "Diarrhea, \nTreatment 1 = Oral Rehydration, \nTreatment 2 = Anti-Diarrheal, \nTreatment 3 = Inhaler": {
+    sev1: 1,
+    sevs1: 2
+  },
+
+  "Minor Burns, \nTreatment 1 = Cough Drops, \nTreatment 2 = Cool water and dressing, \nTreatment 3 = Silver Cream": {
+    sev1: 2,
+    sevs1: 3
+  },
+
+  "Urinary Tract Infection, \nTreatment 1 = Urine Culture, \nTreatment 2 = Ice Pack, \nTreatment 3 = Antibiotics": {
+    sev1: 3,
+    sevs1: 1
+  },
+
+  "Fever (>103F), \nTreatment 1 = IV fluids and antipyretic, \nTreatment 2 = Blood tests, \nTreatment 3 = Bandage": {
+    sev1: 1,
+    sevs1: 2
+  },
+
+  "Worst headache ever, \nTreatment 1 = Cough Syrup, \nTreatment 2 = CT scan, \nTreatment 3 = Pain control": {
+    sev1: 2,
+    sevs1: 3
+  },
+
+  "Broken Bones (visible), \nTreatment 1 = Pain control, \nTreatment 2 = Antihistamine, \nTreatment 3 = Inmobilize and X-ray": {
+    sev1: 3,
+    sevs1: 1
+  },
+
+  "Face Drooping, Arm Weakness, Speech Difficulty, \nTreatment 1 = Stroke protocol tPA eval, \nTreatment 2 = CT scan, \nTreatment 3 = Allergy Meds": {
+    sev1: 1,
+    sevs1: 2
+  },
+
+  "Uncontrollable Bleeding, \nTreatment 1 = Direct pressure and surgical repair, \nTreatment 2 = Ice Cream, \nTreatment 3 = Blood Transfusion": {
+    sev1: 2,
+    sevs1: 3
+  },
+
+  "Unresponsive, \nTreatment 1 = IV access, \nTreatment 2 = Water, \nTreatment 3 = Airway support and oxygen": {
+    sev1: 3,
+    sevs1: 1
+  },
+
+  "Trouble Breathing, \nTreatment 1 = Oxygen and bronchodilator, \nTreatment 2 = Steroids, \nTreatment 3 = Heating pad": {
+    sev1: 1,
+    sevs1: 2
+  }
+};
 class GameScene extends Phaser.Scene {
   /**
    * Load any assets you might need here!
    */
   preload() {
     this.load.setPath("/assets/");
-    this.load.spritesheet("player", "player2.png", {
+    this.load.spritesheet("player", "player3.png", {
       frameWidth: 20,
-      frameHeight: 20,
+      frameHeight: 30,
     });
 
     // TODO 1: load the tileset and tilemap with keys of "tileset" and "map" respectively.
     this.load.image("tileset", "tileset.png");
     this.load.tilemapTiledJSON("map", "my_map3.json");
     
-
+    this.load.image("hospital", "hospital3.png")
+    
 
     this.load.image("coin", "coin.png");
     this.load.image("enemy", "enemy.png");
 
 
-    this.load.image("patient1", "enemy.png");
-    this.load.image("patient2", "enemy.png");
-    this.load.image("patient3", "enemy.png");
-    this.load.image("patient4", "enemy.png");
+    this.load.image("patient1", "patient.png", {frameWidth: 20, frameHeight: 30});
+    this.load.image("patient2", "patient.png", {frameWidth: 20, frameHeight: 30});
+    this.load.image("patient3", "patient.png", {frameWidth: 20, frameHeight: 30});
+    this.load.image("patient4", "patient.png", {frameWidth: 20, frameHeight: 30});
 
 
     this.load.audio("jump", ["jump.ogg", "jump.mp3"]);
@@ -37,20 +144,33 @@ class GameScene extends Phaser.Scene {
    * Called once. Create any objects you need here!
    */
   create() {
+    this.hospital = this.add.image(this.game.config.width/2, this.game.config.height/2, "hospital");
+
     this.key1 = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ONE);
     this.key2 = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.TWO);
     this.key3 = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.THREE);
 
     // create the player sprite
-    this.player = this.physics.add.sprite(this.game.config.width/2, this.game.config.height/2, "player");
-    this.patient1 = this.physics.add.sprite(this.game.config.width/2, this.game.config.height/2+50, "patient1");
-    this.patient2 = this.physics.add.sprite(this.game.config.width/2, this.game.config.height/2-50, "patient2");
-    this.patient3 = this.physics.add.sprite(this.game.config.width/2, this.game.config.height/2-150, "patient3");
-    this.patient4 = this.physics.add.sprite(this.game.config.width/2, this.game.config.height/2+150, "patient4");
+    this.player = this.physics.add.sprite(this.game.config.width/10, this.game.config.height-50, "player");
+    this.player.setScale(1.5);
+    this.patient1 = this.physics.add.sprite(this.game.config.width/2-230, this.game.config.height/2+50, "patient1");
+    this.patient1.setScale(1.5);
+    this.patient2 = this.physics.add.sprite(this.game.config.width/2+230, this.game.config.height/2-50, "patient2");
+    this.patient2.setScale(1.5);
+    this.patient3 = this.physics.add.sprite(this.game.config.width/2-230, this.game.config.height/2-150, "patient3");
+    this.patient3.setScale(1.5);
+    this.patient4 = this.physics.add.sprite(this.game.config.width/2+230, this.game.config.height/2+150, "patient4");
+    this.patient4.setScale(1.5);
     // player movement animations
     this.anims.create({
       key: "right",
-      frames: this.anims.generateFrameNumbers("player", {frames: [1, 2]}),
+      frames: this.anims.generateFrameNumbers("player", {frames: [0, 1]}),
+      frameRate: 8,
+      repeat: -1,
+    });
+    this.anims.create({
+      key: "idle",
+      frames: this.anims.generateFrameNumbers("player", {frames: [2]}),
       frameRate: 8,
       repeat: -1,
     });
@@ -62,7 +182,7 @@ class GameScene extends Phaser.Scene {
     });
 
     // add gravity to make the player fall
-    this.player.body.gravity.y = 500;
+    this.player.body.gravity.y = 1500;
 
     // create arrow keys
     this.cursors = this.input.keyboard.createCursorKeys();
@@ -74,29 +194,32 @@ class GameScene extends Phaser.Scene {
 
 
     // Display the score
-    this.scoreLabel = this.add.text(30, 25, "score: 0", {
+    this.scoreLabel = this.add.text(30, 125, "Score: 0", {
       font: "18px Arial",
       fill: "#ffffff",
     });
+    this.link = this.add.text(120, 125, "Link for more information:\nhttps://docs.google.com/spreadsheets/d/17u7zdPFq004OOZEMA9_dhUYIreTX2r5JX9YRQ98Frz8/edit?gid=0#gid=0", {
+      font: "bold 12px Arial",
+      fill: "#ffffff",})
 
+    this.patient1Label = this.add.text(this.game.config.width/2-190, this.game.config.height/2-15, "Problem Unknown", {
+      font: "bold 14px Arial",
+      fill: "#ffffff",
+    });
+    
 
-    this.patient1Label = this.add.text(this.game.config.width/2-100, this.game.config.height/2+30, "Problem Unknown", {
-      font: "10px Arial",
+    this.patient2Label = this.add.text(this.game.config.width/2+40, this.game.config.height/2-115, "Problem Unknown", {
+      font: "bold 14px Arial",
       fill: "#ffffff",
     });
 
-    this.patient2Label = this.add.text(this.game.config.width/2-100, this.game.config.height/2-70, "Problem Unknown", {
-      font: "10px Arial",
+    this.patient3Label = this.add.text(this.game.config.width/2-190, this.game.config.height/2-215, "Problem Unknown", {
+      font: "bold 14px Arial",
       fill: "#ffffff",
     });
 
-    this.patient3Label = this.add.text(this.game.config.width/2, this.game.config.height/2-170, "Problem Unknown", {
-      font: "10px Arial",
-      fill: "#ffffff",
-    });
-
-    this.patient4Label = this.add.text(this.game.config.width/2, this.game.config.height/2+130, "Problem Unknown", {
-      font: "10px Arial",
+    this.patient4Label = this.add.text(this.game.config.width/2+40, this.game.config.height/2+85, "Problem Unknown", {
+      font: "bold 14px Arial",
       fill: "#ffffff",
     });
 
@@ -104,27 +227,27 @@ class GameScene extends Phaser.Scene {
     this.problem2 = "Runny Nose";
     this.problem3 = "Runny Nose";
     this.problem4 = "Runny Nose";
-    let problemset = ["Runny Nose, Treatment 1 = Antibiotics, Treatment 2 = Antihistamine, Treatment 3 = Decongestant", 
-"Cough, Treatment 1 = Honey and fluids, Treatment 2 = Antibiotics, Treatment 3 = Cough Suppressant",
-"Seasonal Allergies, Treatment 1 = Antihistamine, Treatment 2 = Steroid nasal spray, Treatment 3 = Antibiotics", 
-"Skin rashes (non-rapidly spreading), Treatment 1 = Insulin, Treatment 2 = Topical steroid cream, Treatment 3 = Steroid Nasal Spray", 
-"Wheezing, Treatment 1 = Steroids, Treatment 2 = Ice Pack, Treatment 3 = Bronchodilator Inhaler",
-"Dehydration, Treatment 1 = IV Fluids, Treatment 2 = Oral rehydration, Treatment 3 = Cough Syrup",
-"Eye Irritation, Treatment 1 = Ear Drops, Treatment 2 = Saline Irrigation, Treatment 3 = Artificial Tears",
-"Minor Cuts (stitches required), Treatment 1 = Sterile Dressing, Treatment 2 = Antacid, Treatment 3 = Clean and suture",
- "Sprains, Treatment 1 = RICE protocol, Treatment 2 = Ankle Brace, Treatment 3 = Antibiotics",
- "Sinus Pain, Treatment 1 = Chemotherapy, Treatment 2 = Decongestant, Treatment 3 = Nasal Steroid",
- "Vomiting (no severe dehydration), Treatment 1 = Oral Fluids, Treatment 2 = Cast, Treatment 3 = Antiemetic",
-"Diarrhea, Treatment 1 = Oral Rehydration, Treatment 2 = Anti-Diarrheal, Treatment 3 = Inhaler",
-"Minor Burns, Treatment 1 = Cough Drops, Treatment 2 = Cool water and dressing, Treatment 3 = Silver Cream",
-"Urinary Tract Infection, Treatment 1 = Urine Culture, Treatment 2 = Ice Pack, Treatment 3 = Antibiotics",
-"Fever (>103F), Treatment 1 = IV fluids and antipyretic, Treatment 2 = Blood tests, Treatment 3 = Bandage",
-"Worst headache ever, Treatment 1 = Cough Syrup, Treatment 2 = CT scan, Treatment 3 = Pain control",
-"Broken Bones (visible), Treatment 1 = Pain control, Treatment 2 = Antihistamine, Treatment 3 = Inmobilize and X-ray",
-"Face Drooping, Arm Weakness, Speech Difficulty, Treatment 1 = Stroke protocol tPA eval, Treatment 2 = CT scan, Treatment 3 = Allergy Meds",
-"Uncontrollable Bleeding, Treatment 1 = Direct pressure and surgical repair, Treatment 2 = Ice Cream, Treatment 3 = Blood Transfusion",
-"Unresponsive, Treatment 1 = IV access, Treatment 2 = Water, Treatment 3 = Airway support and oxygen",
-"Trouble Breathing, Treatment 1 = Oxygen and bronchodilator, Treatment 2, Steroids, Treatment 3 = Heating pad"];
+    let problemset = ["Runny Nose, \nTreatment 1 = Antibiotics, \nTreatment 2 = Antihistamine, \nTreatment 3 = Decongestant", 
+"Cough, \nTreatment 1 = Honey and fluids, \nTreatment 2 = Antibiotics, \nTreatment 3 = Cough Suppressant",
+"Seasonal Allergies, \nTreatment 1 = Antihistamine, \nTreatment 2 = Steroid nasal spray, \nTreatment 3 = Antibiotics", 
+"Skin rashes (non-rapidly spreading), \nTreatment 1 = Insulin, \nTreatment 2 = Topical steroid cream, \nTreatment 3 = Steroid Nasal Spray", 
+"Wheezing, \nTreatment 1 = Steroids, \nTreatment 2 = Ice Pack, \nTreatment 3 = Bronchodilator Inhaler",
+"Dehydration, \nTreatment 1 = IV Fluids, \nTreatment 2 = Oral rehydration, \nTreatment 3 = Cough Syrup",
+"Eye Irritation, \nTreatment 1 = Ear Drops, \nTreatment 2 = Saline Irrigation, \nTreatment 3 = Artificial Tears",
+"Minor Cuts (stitches required), \nTreatment 1 = Sterile Dressing, \nTreatment 2 = Antacid, \nTreatment 3 = Clean and suture",
+ "Sprains, \nTreatment 1 = RICE protocol, \nTreatment 2 = Ankle Brace, \nTreatment 3 = Antibiotics",
+ "Sinus Pain, \nTreatment 1 = Chemotherapy, \nTreatment 2 = Decongestant, \nTreatment 3 = Nasal Steroid",
+ "Vomiting (no severe dehydration), \nTreatment 1 = Oral Fluids, \nTreatment 2 = Cast, \nTreatment 3 = Antiemetic",
+"Diarrhea, \nTreatment 1 = Oral Rehydration, \nTreatment 2 = Anti-Diarrheal, \nTreatment 3 = Inhaler",
+"Minor Burns, \nTreatment 1 = Cough Drops, \nTreatment 2 = Cool water and dressing, \nTreatment 3 = Silver Cream",
+"Urinary Tract Infection, \nTreatment 1 = Urine Culture, \nTreatment 2 = Ice Pack, \nTreatment 3 = Antibiotics",
+"Fever (>103F), \nTreatment 1 = IV fluids and antipyretic, \nTreatment 2 = Blood tests, \nTreatment 3 = Bandage",
+"Worst headache ever, \nTreatment 1 = Cough Syrup, \nTreatment 2 = CT scan, \nTreatment 3 = Pain control",
+"Broken Bones (visible), \nTreatment 1 = Pain control, \nTreatment 2 = Antihistamine, \nTreatment 3 = Inmobilize and X-ray",
+"Face Drooping, Arm Weakness, Speech Difficulty, \nTreatment 1 = Stroke protocol tPA eval, \nTreatment 2 = CT scan, \nTreatment 3 = Allergy Meds",
+"Uncontrollable Bleeding, \nTreatment 1 = Direct pressure and surgical repair, \nTreatment 2 = Ice Cream, \nTreatment 3 = Blood Transfusion",
+"Unresponsive, \nTreatment 1 = IV access, \nTreatment 2 = Water, \nTreatment 3 = Airway support and oxygen",
+"Trouble Breathing, \nTreatment 1 = Oxygen and bronchodilator, \nTreatment 2 = Steroids, \nTreatment 3 = Heating pad"];
 
 
     this.problem1 = Phaser.Math.RND.pick(problemset);
@@ -169,7 +292,27 @@ class GameScene extends Phaser.Scene {
    * check for win conditions, etc.
    */
   update() {
+    const data1 = problemSeverityMap[this.problem1];
 
+    if (data1) {
+      this.problemsev1 = data1.sev1;
+      this.problemsevs1 = data1.sevs1;
+    }
+    const data2 = problemSeverityMap[this.problem2];
+    if (data2) {
+      this.problemsev2 = data2.sev1;
+      this.problemsevs2 = data2.sevs1;
+    }
+    const data3 = problemSeverityMap[this.problem3];
+    if (data3) {
+      this.problemsev3 = data3.sev1;
+      this.problemsevs3 = data3.sevs1;
+    }
+    const data4 = problemSeverityMap[this.problem4];
+    if (data4) {
+      this.problemsev4 = data4.sev1;
+      this.problemsevs4 = data4.sevs1;
+    }
     // TODO 5.1: 
 
     this.movePlayer();
@@ -210,8 +353,8 @@ class GameScene extends Phaser.Scene {
 
     if (this.cursors.up.isDown && this.player.body.onFloor()) {
       // jump if the player is on the ground
-      this.player.body.velocity.y = -500;
-      this.jumpSound.play();
+      this.player.body.velocity.y = -400;
+
     }
   }
 
@@ -219,127 +362,135 @@ class GameScene extends Phaser.Scene {
    * Check to see whether the player has collided with any coins
    */
   checkPatient1Collisions(){
+    
+
     if (this.physics.overlap(this.player, this.patient1)){
       this.patient1Label.setText("Problem: " + this.problem1);
       if (this.key1.isDown){
-
+        this.patient1Label.setText("Treatment Done!");
         if (this.problemsev1 ===1){
           this.score += 5;
-          this.scoreLabel.setText("score: " + this.score);
+          this.scoreLabel.setText("Score: " + this.score);
+          
         }
         if (this.problemsevs1 ===1){
           this.score += 2;
-          this.scoreLabel.setText("score: " + this.score);
+          this.scoreLabel.setText("Score: " + this.score);
         }
         this.patient1.destroy();
         this.time.addEvent({
           delay: 8000,
           callback: () => {
-            this.patient1 = this.physics.add.sprite(this.game.config.width/2, this.game.config.height/2+50, "patient1");
+            this.patient1 = this.physics.add.sprite(this.game.config.width/2-230, this.game.config.height/2+50, "patient1");
+            this.patient1.setScale(1.5);
             this.patient1Label.setText("Problem Unknown");
-            let problemset = ["Runny Nose, Treatment 1 = Antibiotics, Treatment 2 = Antihistamine, Treatment 3 = Decongestant", 
-"Cough, Treatment 1 = Honey and fluids, Treatment 2 = Antibiotics, Treatment 3 = Cough Suppressant",
-"Seasonal Allergies, Treatment 1 = Antihistamine, Treatment 2 = Steroid nasal spray, Treatment 3 = Antibiotics", 
-"Skin rashes (non-rapidly spreading), Treatment 1 = Insulin, Treatment 2 = Topical steroid cream, Treatment 3 = Steroid Nasal Spray", 
-"Wheezing, Treatment 1 = Steroids, Treatment 2 = Ice Pack, Treatment 3 = Bronchodilator Inhaler",
-"Dehydration, Treatment 1 = IV Fluids, Treatment 2 = Oral rehydration, Treatment 3 = Cough Syrup",
-"Eye Irritation, Treatment 1 = Ear Drops, Treatment 2 = Saline Irrigation, Treatment 3 = Artificial Tears",
-"Minor Cuts (stitches required), Treatment 1 = Sterile Dressing, Treatment 2 = Antacid, Treatment 3 = Clean and suture",
- "Sprains, Treatment 1 = RICE protocol, Treatment 2 = Ankle Brace, Treatment 3 = Antibiotics",
- "Sinus Pain, Treatment 1 = Chemotherapy, Treatment 2 = Decongestant, Treatment 3 = Nasal Steroid",
- "Vomiting (no severe dehydration), Treatment 1 = Oral Fluids, Treatment 2 = Cast, Treatment 3 = Antiemetic",
-"Diarrhea, Treatment 1 = Oral Rehydration, Treatment 2 = Anti-Diarrheal, Treatment 3 = Inhaler",
-"Minor Burns, Treatment 1 = Cough Drops, Treatment 2 = Cool water and dressing, Treatment 3 = Silver Cream",
-"Urinary Tract Infection, Treatment 1 = Urine Culture, Treatment 2 = Ice Pack, Treatment 3 = Antibiotics",
-"Fever (>103F), Treatment 1 = IV fluids and antipyretic, Treatment 2 = Blood tests, Treatment 3 = Bandage",
-"Worst headache ever, Treatment 1 = Cough Syrup, Treatment 2 = CT scan, Treatment 3 = Pain control",
-"Broken Bones (visible), Treatment 1 = Pain control, Treatment 2 = Antihistamine, Treatment 3 = Inmobilize and X-ray",
-"Face Drooping, Arm Weakness, Speech Difficulty, Treatment 1 = Stroke protocol tPA eval, Treatment 2 = CT scan, Treatment 3 = Allergy Meds",
-"Uncontrollable Bleeding, Treatment 1 = Direct pressure and surgical repair, Treatment 2 = Ice Cream, Treatment 3 = Blood Transfusion",
-"Unresponsive, Treatment 1 = IV access, Treatment 2 = Water, Treatment 3 = Airway support and oxygen",
-"Trouble Breathing, Treatment 1 = Oxygen and bronchodilator, Treatment 2, Steroids, Treatment 3 = Heating pad"];
+            let problemset = ["Runny Nose, \nTreatment 1 = Antibiotics, \nTreatment 2 = Antihistamine, \nTreatment 3 = Decongestant", 
+"Cough, \nTreatment 1 = Honey and fluids, \nTreatment 2 = Antibiotics, \nTreatment 3 = Cough Suppressant",
+"Seasonal Allergies, \nTreatment 1 = Antihistamine, \nTreatment 2 = Steroid nasal spray, \nTreatment 3 = Antibiotics", 
+"Skin rashes (non-rapidly spreading), \nTreatment 1 = Insulin, \nTreatment 2 = Topical steroid cream, \nTreatment 3 = Steroid Nasal Spray", 
+"Wheezing, \nTreatment 1 = Steroids, \nTreatment 2 = Ice Pack, \nTreatment 3 = Bronchodilator Inhaler",
+"Dehydration, \nTreatment 1 = IV Fluids, \nTreatment 2 = Oral rehydration, \nTreatment 3 = Cough Syrup",
+"Eye Irritation, \nTreatment 1 = Ear Drops, \nTreatment 2 = Saline Irrigation, \nTreatment 3 = Artificial Tears",
+"Minor Cuts (stitches required), \nTreatment 1 = Sterile Dressing, \nTreatment 2 = Antacid, \nTreatment 3 = Clean and suture",
+ "Sprains, \nTreatment 1 = RICE protocol, \nTreatment 2 = Ankle Brace, \nTreatment 3 = Antibiotics",
+ "Sinus Pain, \nTreatment 1 = Chemotherapy, \nTreatment 2 = Decongestant, \nTreatment 3 = Nasal Steroid",
+ "Vomiting (no severe dehydration), \nTreatment 1 = Oral Fluids, \nTreatment 2 = Cast, \nTreatment 3 = Antiemetic",
+"Diarrhea, \nTreatment 1 = Oral Rehydration, \nTreatment 2 = Anti-Diarrheal, \nTreatment 3 = Inhaler",
+"Minor Burns, \nTreatment 1 = Cough Drops, \nTreatment 2 = Cool water and dressing, \nTreatment 3 = Silver Cream",
+"Urinary Tract Infection, \nTreatment 1 = Urine Culture, \nTreatment 2 = Ice Pack, \nTreatment 3 = Antibiotics",
+"Fever (>103F), \nTreatment 1 = IV fluids and antipyretic, \nTreatment 2 = Blood tests, \nTreatment 3 = Bandage",
+"Worst headache ever, \nTreatment 1 = Cough Syrup, \nTreatment 2 = CT scan, \nTreatment 3 = Pain control",
+"Broken Bones (visible), \nTreatment 1 = Pain control, \nTreatment 2 = Antihistamine, \nTreatment 3 = Inmobilize and X-ray",
+"Face Drooping, Arm Weakness, Speech Difficulty, \nTreatment 1 = Stroke protocol tPA eval, \nTreatment 2 = CT scan, \nTreatment 3 = Allergy Meds",
+"Uncontrollable Bleeding, \nTreatment 1 = Direct pressure and surgical repair, \nTreatment 2 = Ice Cream, \nTreatment 3 = Blood Transfusion",
+"Unresponsive, \nTreatment 1 = IV access, \nTreatment 2 = Water, \nTreatment 3 = Airway support and oxygen",
+"Trouble Breathing, \nTreatment 1 = Oxygen and bronchodilator, \nTreatment 2 = Steroids, \nTreatment 3 = Heating pad"];
             this.problem1 = Phaser.Math.RND.pick(problemset);
             
         }
         });
       }
       else if (this.key2.isDown){
+        this.patient1Label.setText("Treatment Done!");
         if (this.problemsev1 ===2){
           this.score+=5;
-          this.scoreLabel.setText("score: " + this.score);
+          this.scoreLabel.setText("Score: " + this.score);
         }
         if (this.problemsevs1 ===2){
           this.score += 2;
-          this.scoreLabel.setText("score: " + this.score);
+          this.scoreLabel.setText("Score:" + this.score);
         }
         this.patient1.destroy();
         this.time.addEvent({
           delay: 8000,
           callback: () => {
-            this.patient1 = this.physics.add.sprite(this.game.config.width/2, this.game.config.height/2+50, "patient1");
+            this.patient1 = this.physics.add.sprite(this.game.config.width/2-230, this.game.config.height/2+50, "patient1");
+            this.patient1.setScale(1.5);
             this.patient1Label.setText("Problem Unknown");
-            let problemset = ["Runny Nose, Treatment 1 = Antibiotics, Treatment 2 = Antihistamine, Treatment 3 = Decongestant", 
-"Cough, Treatment 1 = Honey and fluids, Treatment 2 = Antibiotics, Treatment 3 = Cough Suppressant",
-"Seasonal Allergies, Treatment 1 = Antihistamine, Treatment 2 = Steroid nasal spray, Treatment 3 = Antibiotics", 
-"Skin rashes (non-rapidly spreading), Treatment 1 = Insulin, Treatment 2 = Topical steroid cream, Treatment 3 = Steroid Nasal Spray", 
-"Wheezing, Treatment 1 = Steroids, Treatment 2 = Ice Pack, Treatment 3 = Bronchodilator Inhaler",
-"Dehydration, Treatment 1 = IV Fluids, Treatment 2 = Oral rehydration, Treatment 3 = Cough Syrup",
-"Eye Irritation, Treatment 1 = Ear Drops, Treatment 2 = Saline Irrigation, Treatment 3 = Artificial Tears",
-"Minor Cuts (stitches required), Treatment 1 = Sterile Dressing, Treatment 2 = Antacid, Treatment 3 = Clean and suture",
- "Sprains, Treatment 1 = RICE protocol, Treatment 2 = Ankle Brace, Treatment 3 = Antibiotics",
- "Sinus Pain, Treatment 1 = Chemotherapy, Treatment 2 = Decongestant, Treatment 3 = Nasal Steroid",
- "Vomiting (no severe dehydration), Treatment 1 = Oral Fluids, Treatment 2 = Cast, Treatment 3 = Antiemetic",
-"Diarrhea, Treatment 1 = Oral Rehydration, Treatment 2 = Anti-Diarrheal, Treatment 3 = Inhaler",
-"Minor Burns, Treatment 1 = Cough Drops, Treatment 2 = Cool water and dressing, Treatment 3 = Silver Cream",
-"Urinary Tract Infection, Treatment 1 = Urine Culture, Treatment 2 = Ice Pack, Treatment 3 = Antibiotics",
-"Fever (>103F), Treatment 1 = IV fluids and antipyretic, Treatment 2 = Blood tests, Treatment 3 = Bandage",
-"Worst headache ever, Treatment 1 = Cough Syrup, Treatment 2 = CT scan, Treatment 3 = Pain control",
-"Broken Bones (visible), Treatment 1 = Pain control, Treatment 2 = Antihistamine, Treatment 3 = Inmobilize and X-ray",
-"Face Drooping, Arm Weakness, Speech Difficulty, Treatment 1 = Stroke protocol tPA eval, Treatment 2 = CT scan, Treatment 3 = Allergy Meds",
-"Uncontrollable Bleeding, Treatment 1 = Direct pressure and surgical repair, Treatment 2 = Ice Cream, Treatment 3 = Blood Transfusion",
-"Unresponsive, Treatment 1 = IV access, Treatment 2 = Water, Treatment 3 = Airway support and oxygen",
-"Trouble Breathing, Treatment 1 = Oxygen and bronchodilator, Treatment 2, Steroids, Treatment 3 = Heating pad"];
+            let problemset = ["Runny Nose, \nTreatment 1 = Antibiotics, \nTreatment 2 = Antihistamine, \nTreatment 3 = Decongestant", 
+"Cough, \nTreatment 1 = Honey and fluids, \nTreatment 2 = Antibiotics, \nTreatment 3 = Cough Suppressant",
+"Seasonal Allergies, \nTreatment 1 = Antihistamine, \nTreatment 2 = Steroid nasal spray, \nTreatment 3 = Antibiotics", 
+"Skin rashes (non-rapidly spreading), \nTreatment 1 = Insulin, \nTreatment 2 = Topical steroid cream, \nTreatment 3 = Steroid Nasal Spray", 
+"Wheezing, \nTreatment 1 = Steroids, \nTreatment 2 = Ice Pack, \nTreatment 3 = Bronchodilator Inhaler",
+"Dehydration, \nTreatment 1 = IV Fluids, \nTreatment 2 = Oral rehydration, \nTreatment 3 = Cough Syrup",
+"Eye Irritation, \nTreatment 1 = Ear Drops, \nTreatment 2 = Saline Irrigation, \nTreatment 3 = Artificial Tears",
+"Minor Cuts (stitches required), \nTreatment 1 = Sterile Dressing, \nTreatment 2 = Antacid, \nTreatment 3 = Clean and suture",
+ "Sprains, \nTreatment 1 = RICE protocol, \nTreatment 2 = Ankle Brace, \nTreatment 3 = Antibiotics",
+ "Sinus Pain, \nTreatment 1 = Chemotherapy, \nTreatment 2 = Decongestant, \nTreatment 3 = Nasal Steroid",
+ "Vomiting (no severe dehydration), \nTreatment 1 = Oral Fluids, \nTreatment 2 = Cast, \nTreatment 3 = Antiemetic",
+"Diarrhea, \nTreatment 1 = Oral Rehydration, \nTreatment 2 = Anti-Diarrheal, \nTreatment 3 = Inhaler",
+"Minor Burns, \nTreatment 1 = Cough Drops, \nTreatment 2 = Cool water and dressing, \nTreatment 3 = Silver Cream",
+"Urinary Tract Infection, \nTreatment 1 = Urine Culture, \nTreatment 2 = Ice Pack, \nTreatment 3 = Antibiotics",
+"Fever (>103F), \nTreatment 1 = IV fluids and antipyretic, \nTreatment 2 = Blood tests, \nTreatment 3 = Bandage",
+"Worst headache ever, \nTreatment 1 = Cough Syrup, \nTreatment 2 = CT scan, \nTreatment 3 = Pain control",
+"Broken Bones (visible), \nTreatment 1 = Pain control, \nTreatment 2 = Antihistamine, \nTreatment 3 = Inmobilize and X-ray",
+"Face Drooping, Arm Weakness, Speech Difficulty, \nTreatment 1 = Stroke protocol tPA eval, \nTreatment 2 = CT scan, \nTreatment 3 = Allergy Meds",
+"Uncontrollable Bleeding, \nTreatment 1 = Direct pressure and surgical repair, \nTreatment 2 = Ice Cream, \nTreatment 3 = Blood Transfusion",
+"Unresponsive, \nTreatment 1 = IV access, \nTreatment 2 = Water, \nTreatment 3 = Airway support and oxygen",
+"Trouble Breathing, \nTreatment 1 = Oxygen and bronchodilator, \nTreatment 2 = Steroids, \nTreatment 3 = Heating pad"];
             this.problem1 = Phaser.Math.RND.pick(problemset);
             
         }
         });
       }
       else if (this.key3.isDown){
+        this.patient1Label.setText("Treatment Done!");
         if (this.problemsev1 ===3){
           this.score+=5;
-          this.scoreLabel.setText("score: " + this.score);
+          this.scoreLabel.setText("Score: " + this.score);
         }
         if (this.problemsevs1 ===3){
           this.score += 2;
-          this.scoreLabel.setText("score: " + this.score);
+          this.scoreLabel.setText("Score: " + this.score);
         }
         this.patient1.destroy();
         this.time.addEvent({
           delay: 8000,
           callback: () => {
-            this.patient1 = this.physics.add.sprite(this.game.config.width/2, this.game.config.height/2+50, "patient1");
+            this.patient1 = this.physics.add.sprite(this.game.config.width/2-230, this.game.config.height/2+50, "patient1");
+            this.patient1.setScale(1.5);
             this.patient1Label.setText("Problem Unknown");
-            let problemset = ["Runny Nose, Treatment 1 = Antibiotics, Treatment 2 = Antihistamine, Treatment 3 = Decongestant", 
-"Cough, Treatment 1 = Honey and fluids, Treatment 2 = Antibiotics, Treatment 3 = Cough Suppressant",
-"Seasonal Allergies, Treatment 1 = Antihistamine, Treatment 2 = Steroid nasal spray, Treatment 3 = Antibiotics", 
-"Skin rashes (non-rapidly spreading), Treatment 1 = Insulin, Treatment 2 = Topical steroid cream, Treatment 3 = Steroid Nasal Spray", 
-"Wheezing, Treatment 1 = Steroids, Treatment 2 = Ice Pack, Treatment 3 = Bronchodilator Inhaler",
-"Dehydration, Treatment 1 = IV Fluids, Treatment 2 = Oral rehydration, Treatment 3 = Cough Syrup",
-"Eye Irritation, Treatment 1 = Ear Drops, Treatment 2 = Saline Irrigation, Treatment 3 = Artificial Tears",
-"Minor Cuts (stitches required), Treatment 1 = Sterile Dressing, Treatment 2 = Antacid, Treatment 3 = Clean and suture",
- "Sprains, Treatment 1 = RICE protocol, Treatment 2 = Ankle Brace, Treatment 3 = Antibiotics",
- "Sinus Pain, Treatment 1 = Chemotherapy, Treatment 2 = Decongestant, Treatment 3 = Nasal Steroid",
- "Vomiting (no severe dehydration), Treatment 1 = Oral Fluids, Treatment 2 = Cast, Treatment 3 = Antiemetic",
-"Diarrhea, Treatment 1 = Oral Rehydration, Treatment 2 = Anti-Diarrheal, Treatment 3 = Inhaler",
-"Minor Burns, Treatment 1 = Cough Drops, Treatment 2 = Cool water and dressing, Treatment 3 = Silver Cream",
-"Urinary Tract Infection, Treatment 1 = Urine Culture, Treatment 2 = Ice Pack, Treatment 3 = Antibiotics",
-"Fever (>103F), Treatment 1 = IV fluids and antipyretic, Treatment 2 = Blood tests, Treatment 3 = Bandage",
-"Worst headache ever, Treatment 1 = Cough Syrup, Treatment 2 = CT scan, Treatment 3 = Pain control",
-"Broken Bones (visible), Treatment 1 = Pain control, Treatment 2 = Antihistamine, Treatment 3 = Inmobilize and X-ray",
-"Face Drooping, Arm Weakness, Speech Difficulty, Treatment 1 = Stroke protocol tPA eval, Treatment 2 = CT scan, Treatment 3 = Allergy Meds",
-"Uncontrollable Bleeding, Treatment 1 = Direct pressure and surgical repair, Treatment 2 = Ice Cream, Treatment 3 = Blood Transfusion",
-"Unresponsive, Treatment 1 = IV access, Treatment 2 = Water, Treatment 3 = Airway support and oxygen",
-"Trouble Breathing, Treatment 1 = Oxygen and bronchodilator, Treatment 2, Steroids, Treatment 3 = Heating pad"];
+            let problemset = ["Runny Nose, \nTreatment 1 = Antibiotics, \nTreatment 2 = Antihistamine, \nTreatment 3 = Decongestant", 
+"Cough, \nTreatment 1 = Honey and fluids, \nTreatment 2 = Antibiotics, \nTreatment 3 = Cough Suppressant",
+"Seasonal Allergies, \nTreatment 1 = Antihistamine, \nTreatment 2 = Steroid nasal spray, \nTreatment 3 = Antibiotics", 
+"Skin rashes (non-rapidly spreading), \nTreatment 1 = Insulin, \nTreatment 2 = Topical steroid cream, \nTreatment 3 = Steroid Nasal Spray", 
+"Wheezing, \nTreatment 1 = Steroids, \nTreatment 2 = Ice Pack, \nTreatment 3 = Bronchodilator Inhaler",
+"Dehydration, \nTreatment 1 = IV Fluids, \nTreatment 2 = Oral rehydration, \nTreatment 3 = Cough Syrup",
+"Eye Irritation, \nTreatment 1 = Ear Drops, \nTreatment 2 = Saline Irrigation, \nTreatment 3 = Artificial Tears",
+"Minor Cuts (stitches required), \nTreatment 1 = Sterile Dressing, \nTreatment 2 = Antacid, \nTreatment 3 = Clean and suture",
+ "Sprains, \nTreatment 1 = RICE protocol, \nTreatment 2 = Ankle Brace, \nTreatment 3 = Antibiotics",
+ "Sinus Pain, \nTreatment 1 = Chemotherapy, \nTreatment 2 = Decongestant, \nTreatment 3 = Nasal Steroid",
+ "Vomiting (no severe dehydration), \nTreatment 1 = Oral Fluids, \nTreatment 2 = Cast, \nTreatment 3 = Antiemetic",
+"Diarrhea, \nTreatment 1 = Oral Rehydration, \nTreatment 2 = Anti-Diarrheal, \nTreatment 3 = Inhaler",
+"Minor Burns, \nTreatment 1 = Cough Drops, \nTreatment 2 = Cool water and dressing, \nTreatment 3 = Silver Cream",
+"Urinary Tract Infection, \nTreatment 1 = Urine Culture, \nTreatment 2 = Ice Pack, \nTreatment 3 = Antibiotics",
+"Fever (>103F), \nTreatment 1 = IV fluids and antipyretic, \nTreatment 2 = Blood tests, \nTreatment 3 = Bandage",
+"Worst headache ever, \nTreatment 1 = Cough Syrup, \nTreatment 2 = CT scan, \nTreatment 3 = Pain control",
+"Broken Bones (visible), \nTreatment 1 = Pain control, \nTreatment 2 = Antihistamine, \nTreatment 3 = Inmobilize and X-ray",
+"Face Drooping, Arm Weakness, Speech Difficulty, \nTreatment 1 = Stroke protocol tPA eval, \nTreatment 2 = CT scan, \nTreatment 3 = Allergy Meds",
+"Uncontrollable Bleeding, \nTreatment 1 = Direct pressure and surgical repair, \nTreatment 2 = Ice Cream, \nTreatment 3 = Blood Transfusion",
+"Unresponsive, \nTreatment 1 = IV access, \nTreatment 2 = Water, \nTreatment 3 = Airway support and oxygen",
+"Trouble Breathing, \nTreatment 1 = Oxygen and bronchodilator, \nTreatment 2 = Steroids, \nTreatment 3 = Heating pad"];
             this.problem1 = Phaser.Math.RND.pick(problemset);
             
         }
@@ -352,122 +503,128 @@ class GameScene extends Phaser.Scene {
     if (this.physics.overlap(this.player, this.patient2)){
       this.patient2Label.setText("Problem: " + this.problem2);
       if (this.key1.isDown){
+        this.patient2Label.setText("Treatment Done!");
 
         if (this.problemsev2 ===1){
           this.score += 5;
-          this.scoreLabel.setText("score: " + this.score);
+          this.scoreLabel.setText("Score: " + this.score);
         }
         if (this.problemsevs2 ===1){
           this.score += 2;
-          this.scoreLabel.setText("score: " + this.score);
+          this.scoreLabel.setText("Score: " + this.score);
         }
         this.patient2.destroy();
         this.time.addEvent({
           delay: 8000,
           callback: () => {
-            this.patient2 = this.physics.add.sprite(this.game.config.width/2, this.game.config.height/2-50, "patient2");
+            this.patient2 = this.physics.add.sprite(this.game.config.width/2+230, this.game.config.height/2-50, "patient2");
+            this.patient2.setScale(1.5);
             this.patient2Label.setText("Problem Unknown");
-            let problemset = ["Runny Nose, Treatment 1 = Antibiotics, Treatment 2 = Antihistamine, Treatment 3 = Decongestant", 
-"Cough, Treatment 1 = Honey and fluids, Treatment 2 = Antibiotics, Treatment 3 = Cough Suppressant",
-"Seasonal Allergies, Treatment 1 = Antihistamine, Treatment 2 = Steroid nasal spray, Treatment 3 = Antibiotics", 
-"Skin rashes (non-rapidly spreading), Treatment 1 = Insulin, Treatment 2 = Topical steroid cream, Treatment 3 = Steroid Nasal Spray", 
-"Wheezing, Treatment 1 = Steroids, Treatment 2 = Ice Pack, Treatment 3 = Bronchodilator Inhaler",
-"Dehydration, Treatment 1 = IV Fluids, Treatment 2 = Oral rehydration, Treatment 3 = Cough Syrup",
-"Eye Irritation, Treatment 1 = Ear Drops, Treatment 2 = Saline Irrigation, Treatment 3 = Artificial Tears",
-"Minor Cuts (stitches required), Treatment 1 = Sterile Dressing, Treatment 2 = Antacid, Treatment 3 = Clean and suture",
- "Sprains, Treatment 1 = RICE protocol, Treatment 2 = Ankle Brace, Treatment 3 = Antibiotics",
- "Sinus Pain, Treatment 1 = Chemotherapy, Treatment 2 = Decongestant, Treatment 3 = Nasal Steroid",
- "Vomiting (no severe dehydration), Treatment 1 = Oral Fluids, Treatment 2 = Cast, Treatment 3 = Antiemetic",
-"Diarrhea, Treatment 1 = Oral Rehydration, Treatment 2 = Anti-Diarrheal, Treatment 3 = Inhaler",
-"Minor Burns, Treatment 1 = Cough Drops, Treatment 2 = Cool water and dressing, Treatment 3 = Silver Cream",
-"Urinary Tract Infection, Treatment 1 = Urine Culture, Treatment 2 = Ice Pack, Treatment 3 = Antibiotics",
-"Fever (>103F), Treatment 1 = IV fluids and antipyretic, Treatment 2 = Blood tests, Treatment 3 = Bandage",
-"Worst headache ever, Treatment 1 = Cough Syrup, Treatment 2 = CT scan, Treatment 3 = Pain control",
-"Broken Bones (visible), Treatment 1 = Pain control, Treatment 2 = Antihistamine, Treatment 3 = Inmobilize and X-ray",
-"Face Drooping, Arm Weakness, Speech Difficulty, Treatment 1 = Stroke protocol tPA eval, Treatment 2 = CT scan, Treatment 3 = Allergy Meds",
-"Uncontrollable Bleeding, Treatment 1 = Direct pressure and surgical repair, Treatment 2 = Ice Cream, Treatment 3 = Blood Transfusion",
-"Unresponsive, Treatment 1 = IV access, Treatment 2 = Water, Treatment 3 = Airway support and oxygen",
-"Trouble Breathing, Treatment 1 = Oxygen and bronchodilator, Treatment 2, Steroids, Treatment 3 = Heating pad"];
+            let problemset = ["Runny Nose, \nTreatment 1 = Antibiotics, \nTreatment 2 = Antihistamine, \nTreatment 3 = Decongestant", 
+"Cough, \nTreatment 1 = Honey and fluids, \nTreatment 2 = Antibiotics, \nTreatment 3 = Cough Suppressant",
+"Seasonal Allergies, \nTreatment 1 = Antihistamine, \nTreatment 2 = Steroid nasal spray, \nTreatment 3 = Antibiotics", 
+"Skin rashes (non-rapidly spreading), \nTreatment 1 = Insulin, \nTreatment 2 = Topical steroid cream, \nTreatment 3 = Steroid Nasal Spray", 
+"Wheezing, \nTreatment 1 = Steroids, \nTreatment 2 = Ice Pack, \nTreatment 3 = Bronchodilator Inhaler",
+"Dehydration, \nTreatment 1 = IV Fluids, \nTreatment 2 = Oral rehydration, \nTreatment 3 = Cough Syrup",
+"Eye Irritation, \nTreatment 1 = Ear Drops, \nTreatment 2 = Saline Irrigation, \nTreatment 3 = Artificial Tears",
+"Minor Cuts (stitches required), \nTreatment 1 = Sterile Dressing, \nTreatment 2 = Antacid, \nTreatment 3 = Clean and suture",
+ "Sprains, \nTreatment 1 = RICE protocol, \nTreatment 2 = Ankle Brace, \nTreatment 3 = Antibiotics",
+ "Sinus Pain, \nTreatment 1 = Chemotherapy, \nTreatment 2 = Decongestant, \nTreatment 3 = Nasal Steroid",
+ "Vomiting (no severe dehydration), \nTreatment 1 = Oral Fluids, \nTreatment 2 = Cast, \nTreatment 3 = Antiemetic",
+"Diarrhea, \nTreatment 1 = Oral Rehydration, \nTreatment 2 = Anti-Diarrheal, \nTreatment 3 = Inhaler",
+"Minor Burns, \nTreatment 1 = Cough Drops, \nTreatment 2 = Cool water and dressing, \nTreatment 3 = Silver Cream",
+"Urinary Tract Infection, \nTreatment 1 = Urine Culture, \nTreatment 2 = Ice Pack, \nTreatment 3 = Antibiotics",
+"Fever (>103F), \nTreatment 1 = IV fluids and antipyretic, \nTreatment 2 = Blood tests, \nTreatment 3 = Bandage",
+"Worst headache ever, \nTreatment 1 = Cough Syrup, \nTreatment 2 = CT scan, \nTreatment 3 = Pain control",
+"Broken Bones (visible), \nTreatment 1 = Pain control, \nTreatment 2 = Antihistamine, \nTreatment 3 = Inmobilize and X-ray",
+"Face Drooping, Arm Weakness, Speech Difficulty, \nTreatment 1 = Stroke protocol tPA eval, \nTreatment 2 = CT scan, \nTreatment 3 = Allergy Meds",
+"Uncontrollable Bleeding, \nTreatment 1 = Direct pressure and surgical repair, \nTreatment 2 = Ice Cream, \nTreatment 3 = Blood Transfusion",
+"Unresponsive, \nTreatment 1 = IV access, \nTreatment 2 = Water, \nTreatment 3 = Airway support and oxygen",
+"Trouble Breathing, \nTreatment 1 = Oxygen and bronchodilator, \nTreatment 2 = Steroids, \nTreatment 3 = Heating pad"];
             this.problem2 = Phaser.Math.RND.pick(problemset);
         }
         });
       }
       else if (this.key2.isDown){
+        this.patient2Label.setText("Treatment Done!");
         if (this.problemsev2 ===2){
           this.score+=5;
-          this.scoreLabel.setText("score: " + this.score);
+          this.scoreLabel.setText("Score: " + this.score);
         }
         if (this.problemsevs2 ===2){
           this.score += 2;
-          this.scoreLabel.setText("score: " + this.score);
+          this.scoreLabel.setText("Score: " + this.score);
         }
         this.patient2.destroy();
         this.time.addEvent({
           delay: 8000,
           callback: () => {
-            this.patient2 = this.physics.add.sprite(this.game.config.width/2, this.game.config.height/2-50, "patient2");
+            this.patient2 = this.physics.add.sprite(this.game.config.width/2+230, this.game.config.height/2-50, "patient2");
+            this.patient2.setScale(1.5);
             this.patient2Label.setText("Problem Unknown");
-            let problemset = ["Runny Nose, Treatment 1 = Antibiotics, Treatment 2 = Antihistamine, Treatment 3 = Decongestant", 
-"Cough, Treatment 1 = Honey and fluids, Treatment 2 = Antibiotics, Treatment 3 = Cough Suppressant",
-"Seasonal Allergies, Treatment 1 = Antihistamine, Treatment 2 = Steroid nasal spray, Treatment 3 = Antibiotics", 
-"Skin rashes (non-rapidly spreading), Treatment 1 = Insulin, Treatment 2 = Topical steroid cream, Treatment 3 = Steroid Nasal Spray", 
-"Wheezing, Treatment 1 = Steroids, Treatment 2 = Ice Pack, Treatment 3 = Bronchodilator Inhaler",
-"Dehydration, Treatment 1 = IV Fluids, Treatment 2 = Oral rehydration, Treatment 3 = Cough Syrup",
-"Eye Irritation, Treatment 1 = Ear Drops, Treatment 2 = Saline Irrigation, Treatment 3 = Artificial Tears",
-"Minor Cuts (stitches required), Treatment 1 = Sterile Dressing, Treatment 2 = Antacid, Treatment 3 = Clean and suture",
- "Sprains, Treatment 1 = RICE protocol, Treatment 2 = Ankle Brace, Treatment 3 = Antibiotics",
- "Sinus Pain, Treatment 1 = Chemotherapy, Treatment 2 = Decongestant, Treatment 3 = Nasal Steroid",
- "Vomiting (no severe dehydration), Treatment 1 = Oral Fluids, Treatment 2 = Cast, Treatment 3 = Antiemetic",
-"Diarrhea, Treatment 1 = Oral Rehydration, Treatment 2 = Anti-Diarrheal, Treatment 3 = Inhaler",
-"Minor Burns, Treatment 1 = Cough Drops, Treatment 2 = Cool water and dressing, Treatment 3 = Silver Cream",
-"Urinary Tract Infection, Treatment 1 = Urine Culture, Treatment 2 = Ice Pack, Treatment 3 = Antibiotics",
-"Fever (>103F), Treatment 1 = IV fluids and antipyretic, Treatment 2 = Blood tests, Treatment 3 = Bandage",
-"Worst headache ever, Treatment 1 = Cough Syrup, Treatment 2 = CT scan, Treatment 3 = Pain control",
-"Broken Bones (visible), Treatment 1 = Pain control, Treatment 2 = Antihistamine, Treatment 3 = Inmobilize and X-ray",
-"Face Drooping, Arm Weakness, Speech Difficulty, Treatment 1 = Stroke protocol tPA eval, Treatment 2 = CT scan, Treatment 3 = Allergy Meds",
-"Uncontrollable Bleeding, Treatment 1 = Direct pressure and surgical repair, Treatment 2 = Ice Cream, Treatment 3 = Blood Transfusion",
-"Unresponsive, Treatment 1 = IV access, Treatment 2 = Water, Treatment 3 = Airway support and oxygen",
-"Trouble Breathing, Treatment 1 = Oxygen and bronchodilator, Treatment 2, Steroids, Treatment 3 = Heating pad"];
+            let problemset = ["Runny Nose, \nTreatment 1 = Antibiotics, \nTreatment 2 = Antihistamine, \nTreatment 3 = Decongestant", 
+"Cough, \nTreatment 1 = Honey and fluids, \nTreatment 2 = Antibiotics, \nTreatment 3 = Cough Suppressant",
+"Seasonal Allergies, \nTreatment 1 = Antihistamine, \nTreatment 2 = Steroid nasal spray, \nTreatment 3 = Antibiotics", 
+"Skin rashes (non-rapidly spreading), \nTreatment 1 = Insulin, \nTreatment 2 = Topical steroid cream, \nTreatment 3 = Steroid Nasal Spray", 
+"Wheezing, \nTreatment 1 = Steroids, \nTreatment 2 = Ice Pack, \nTreatment 3 = Bronchodilator Inhaler",
+"Dehydration, \nTreatment 1 = IV Fluids, \nTreatment 2 = Oral rehydration, \nTreatment 3 = Cough Syrup",
+"Eye Irritation, \nTreatment 1 = Ear Drops, \nTreatment 2 = Saline Irrigation, \nTreatment 3 = Artificial Tears",
+"Minor Cuts (stitches required), \nTreatment 1 = Sterile Dressing, \nTreatment 2 = Antacid, \nTreatment 3 = Clean and suture",
+ "Sprains, \nTreatment 1 = RICE protocol, \nTreatment 2 = Ankle Brace, \nTreatment 3 = Antibiotics",
+ "Sinus Pain, \nTreatment 1 = Chemotherapy, \nTreatment 2 = Decongestant, \nTreatment 3 = Nasal Steroid",
+ "Vomiting (no severe dehydration), \nTreatment 1 = Oral Fluids, \nTreatment 2 = Cast, \nTreatment 3 = Antiemetic",
+"Diarrhea, \nTreatment 1 = Oral Rehydration, \nTreatment 2 = Anti-Diarrheal, \nTreatment 3 = Inhaler",
+"Minor Burns, \nTreatment 1 = Cough Drops, \nTreatment 2 = Cool water and dressing, \nTreatment 3 = Silver Cream",
+"Urinary Tract Infection, \nTreatment 1 = Urine Culture, \nTreatment 2 = Ice Pack, \nTreatment 3 = Antibiotics",
+"Fever (>103F), \nTreatment 1 = IV fluids and antipyretic, \nTreatment 2 = Blood tests, \nTreatment 3 = Bandage",
+"Worst headache ever, \nTreatment 1 = Cough Syrup, \nTreatment 2 = CT scan, \nTreatment 3 = Pain control",
+"Broken Bones (visible), \nTreatment 1 = Pain control, \nTreatment 2 = Antihistamine, \nTreatment 3 = Inmobilize and X-ray",
+"Face Drooping, Arm Weakness, Speech Difficulty, \nTreatment 1 = Stroke protocol tPA eval, \nTreatment 2 = CT scan, \nTreatment 3 = Allergy Meds",
+"Uncontrollable Bleeding, \nTreatment 1 = Direct pressure and surgical repair, \nTreatment 2 = Ice Cream, \nTreatment 3 = Blood Transfusion",
+"Unresponsive, \nTreatment 1 = IV access, \nTreatment 2 = Water, \nTreatment 3 = Airway support and oxygen",
+"Trouble Breathing, \nTreatment 1 = Oxygen and bronchodilator, \nTreatment 2 = Steroids, \nTreatment 3 = Heating pad"];
             this.problem2 = Phaser.Math.RND.pick(problemset);
         }
         });
       }
       else if (this.key3.isDown){
+        this.patient2Label.setText("Treatment Done!");
         if (this.problemsev2 ===3){
           this.score+=5;
-          this.scoreLabel.setText("score: " + this.score);
+          this.scoreLabel.setText("Score: " + this.score);
         }
         if (this.problemsevs2 ===3){
           this.score += 2;
-          this.scoreLabel.setText("score: " + this.score);
+          this.scoreLabel.setText("Score: " + this.score);
         }
         this.patient2.destroy();
         this.time.addEvent({
           delay: 8000,
           callback: () => {
-            this.patient2 = this.physics.add.sprite(this.game.config.width/2, this.game.config.height/2-50, "patient2");
+            this.patient2 = this.physics.add.sprite(this.game.config.width/2+230, this.game.config.height/2-50, "patient2");
+            this.patient2.setScale(1.5);
             this.patient2Label.setText("Problem Unknown");
-            let problemset = ["Runny Nose, Treatment 1 = Antibiotics, Treatment 2 = Antihistamine, Treatment 3 = Decongestant", 
-"Cough, Treatment 1 = Honey and fluids, Treatment 2 = Antibiotics, Treatment 3 = Cough Suppressant",
-"Seasonal Allergies, Treatment 1 = Antihistamine, Treatment 2 = Steroid nasal spray, Treatment 3 = Antibiotics", 
-"Skin rashes (non-rapidly spreading), Treatment 1 = Insulin, Treatment 2 = Topical steroid cream, Treatment 3 = Steroid Nasal Spray", 
-"Wheezing, Treatment 1 = Steroids, Treatment 2 = Ice Pack, Treatment 3 = Bronchodilator Inhaler",
-"Dehydration, Treatment 1 = IV Fluids, Treatment 2 = Oral rehydration, Treatment 3 = Cough Syrup",
-"Eye Irritation, Treatment 1 = Ear Drops, Treatment 2 = Saline Irrigation, Treatment 3 = Artificial Tears",
-"Minor Cuts (stitches required), Treatment 1 = Sterile Dressing, Treatment 2 = Antacid, Treatment 3 = Clean and suture",
- "Sprains, Treatment 1 = RICE protocol, Treatment 2 = Ankle Brace, Treatment 3 = Antibiotics",
- "Sinus Pain, Treatment 1 = Chemotherapy, Treatment 2 = Decongestant, Treatment 3 = Nasal Steroid",
- "Vomiting (no severe dehydration), Treatment 1 = Oral Fluids, Treatment 2 = Cast, Treatment 3 = Antiemetic",
-"Diarrhea, Treatment 1 = Oral Rehydration, Treatment 2 = Anti-Diarrheal, Treatment 3 = Inhaler",
-"Minor Burns, Treatment 1 = Cough Drops, Treatment 2 = Cool water and dressing, Treatment 3 = Silver Cream",
-"Urinary Tract Infection, Treatment 1 = Urine Culture, Treatment 2 = Ice Pack, Treatment 3 = Antibiotics",
-"Fever (>103F), Treatment 1 = IV fluids and antipyretic, Treatment 2 = Blood tests, Treatment 3 = Bandage",
-"Worst headache ever, Treatment 1 = Cough Syrup, Treatment 2 = CT scan, Treatment 3 = Pain control",
-"Broken Bones (visible), Treatment 1 = Pain control, Treatment 2 = Antihistamine, Treatment 3 = Inmobilize and X-ray",
-"Face Drooping, Arm Weakness, Speech Difficulty, Treatment 1 = Stroke protocol tPA eval, Treatment 2 = CT scan, Treatment 3 = Allergy Meds",
-"Uncontrollable Bleeding, Treatment 1 = Direct pressure and surgical repair, Treatment 2 = Ice Cream, Treatment 3 = Blood Transfusion",
-"Unresponsive, Treatment 1 = IV access, Treatment 2 = Water, Treatment 3 = Airway support and oxygen",
-"Trouble Breathing, Treatment 1 = Oxygen and bronchodilator, Treatment 2, Steroids, Treatment 3 = Heating pad"];
+            let problemset = ["Runny Nose, \nTreatment 1 = Antibiotics, \nTreatment 2 = Antihistamine, \nTreatment 3 = Decongestant", 
+"Cough, \nTreatment 1 = Honey and fluids, \nTreatment 2 = Antibiotics, \nTreatment 3 = Cough Suppressant",
+"Seasonal Allergies, \nTreatment 1 = Antihistamine, \nTreatment 2 = Steroid nasal spray, \nTreatment 3 = Antibiotics", 
+"Skin rashes (non-rapidly spreading), \nTreatment 1 = Insulin, \nTreatment 2 = Topical steroid cream, \nTreatment 3 = Steroid Nasal Spray", 
+"Wheezing, \nTreatment 1 = Steroids, \nTreatment 2 = Ice Pack, \nTreatment 3 = Bronchodilator Inhaler",
+"Dehydration, \nTreatment 1 = IV Fluids, \nTreatment 2 = Oral rehydration, \nTreatment 3 = Cough Syrup",
+"Eye Irritation, \nTreatment 1 = Ear Drops, \nTreatment 2 = Saline Irrigation, \nTreatment 3 = Artificial Tears",
+"Minor Cuts (stitches required), \nTreatment 1 = Sterile Dressing, \nTreatment 2 = Antacid, \nTreatment 3 = Clean and suture",
+ "Sprains, \nTreatment 1 = RICE protocol, \nTreatment 2 = Ankle Brace, \nTreatment 3 = Antibiotics",
+ "Sinus Pain, \nTreatment 1 = Chemotherapy, \nTreatment 2 = Decongestant, \nTreatment 3 = Nasal Steroid",
+ "Vomiting (no severe dehydration), \nTreatment 1 = Oral Fluids, \nTreatment 2 = Cast, \nTreatment 3 = Antiemetic",
+"Diarrhea, \nTreatment 1 = Oral Rehydration, \nTreatment 2 = Anti-Diarrheal, \nTreatment 3 = Inhaler",
+"Minor Burns, \nTreatment 1 = Cough Drops, \nTreatment 2 = Cool water and dressing, \nTreatment 3 = Silver Cream",
+"Urinary Tract Infection, \nTreatment 1 = Urine Culture, \nTreatment 2 = Ice Pack, \nTreatment 3 = Antibiotics",
+"Fever (>103F), \nTreatment 1 = IV fluids and antipyretic, \nTreatment 2 = Blood tests, \nTreatment 3 = Bandage",
+"Worst headache ever, \nTreatment 1 = Cough Syrup, \nTreatment 2 = CT scan, \nTreatment 3 = Pain control",
+"Broken Bones (visible), \nTreatment 1 = Pain control, \nTreatment 2 = Antihistamine, \nTreatment 3 = Inmobilize and X-ray",
+"Face Drooping, Arm Weakness, Speech Difficulty, \nTreatment 1 = Stroke protocol tPA eval, \nTreatment 2 = CT scan, \nTreatment 3 = Allergy Meds",
+"Uncontrollable Bleeding, \nTreatment 1 = Direct pressure and surgical repair, \nTreatment 2 = Ice Cream, \nTreatment 3 = Blood Transfusion",
+"Unresponsive, \nTreatment 1 = IV access, \nTreatment 2 = Water, \nTreatment 3 = Airway support and oxygen",
+"Trouble Breathing, \nTreatment 1 = Oxygen and bronchodilator, \nTreatment 2 = Steroids, \nTreatment 3 = Heating pad"];
             this.problem2 = Phaser.Math.RND.pick(problemset);
         }
         });
@@ -479,122 +636,128 @@ class GameScene extends Phaser.Scene {
     if (this.physics.overlap(this.player, this.patient3)){
       this.patient3Label.setText("Problem: " + this.problem3);
       if (this.key1.isDown){
+        this.patient3Label.setText("Treatment Done!");
 
         if (this.problemsev3 ===1){
           this.score += 5;
-          this.scoreLabel.setText("score: " + this.score);
+          this.scoreLabel.setText("Score: " + this.score);
         }
         if (this.problemsevs3 ===1){
           this.score += 2;
-          this.scoreLabel.setText("score: " + this.score);
+          this.scoreLabel.setText("Score: " + this.score);
         }
         this.patient3.destroy();
         this.time.addEvent({
           delay: 8000,
           callback: () => {
-            this.patient3 = this.physics.add.sprite(this.game.config.width/2, this.game.config.height/2-150, "patient3");
+            this.patient3 = this.physics.add.sprite(this.game.config.width/2-230, this.game.config.height/2-150, "patient3");
+            this.patient3.setScale(1.5);
             this.patient3Label.setText("Problem Unknown");
-            let problemset = ["Runny Nose, Treatment 1 = Antibiotics, Treatment 2 = Antihistamine, Treatment 3 = Decongestant", 
-"Cough, Treatment 1 = Honey and fluids, Treatment 2 = Antibiotics, Treatment 3 = Cough Suppressant",
-"Seasonal Allergies, Treatment 1 = Antihistamine, Treatment 2 = Steroid nasal spray, Treatment 3 = Antibiotics", 
-"Skin rashes (non-rapidly spreading), Treatment 1 = Insulin, Treatment 2 = Topical steroid cream, Treatment 3 = Steroid Nasal Spray", 
-"Wheezing, Treatment 1 = Steroids, Treatment 2 = Ice Pack, Treatment 3 = Bronchodilator Inhaler",
-"Dehydration, Treatment 1 = IV Fluids, Treatment 2 = Oral rehydration, Treatment 3 = Cough Syrup",
-"Eye Irritation, Treatment 1 = Ear Drops, Treatment 2 = Saline Irrigation, Treatment 3 = Artificial Tears",
-"Minor Cuts (stitches required), Treatment 1 = Sterile Dressing, Treatment 2 = Antacid, Treatment 3 = Clean and suture",
- "Sprains, Treatment 1 = RICE protocol, Treatment 2 = Ankle Brace, Treatment 3 = Antibiotics",
- "Sinus Pain, Treatment 1 = Chemotherapy, Treatment 2 = Decongestant, Treatment 3 = Nasal Steroid",
- "Vomiting (no severe dehydration), Treatment 1 = Oral Fluids, Treatment 2 = Cast, Treatment 3 = Antiemetic",
-"Diarrhea, Treatment 1 = Oral Rehydration, Treatment 2 = Anti-Diarrheal, Treatment 3 = Inhaler",
-"Minor Burns, Treatment 1 = Cough Drops, Treatment 2 = Cool water and dressing, Treatment 3 = Silver Cream",
-"Urinary Tract Infection, Treatment 1 = Urine Culture, Treatment 2 = Ice Pack, Treatment 3 = Antibiotics",
-"Fever (>103F), Treatment 1 = IV fluids and antipyretic, Treatment 2 = Blood tests, Treatment 3 = Bandage",
-"Worst headache ever, Treatment 1 = Cough Syrup, Treatment 2 = CT scan, Treatment 3 = Pain control",
-"Broken Bones (visible), Treatment 1 = Pain control, Treatment 2 = Antihistamine, Treatment 3 = Inmobilize and X-ray",
-"Face Drooping, Arm Weakness, Speech Difficulty, Treatment 1 = Stroke protocol tPA eval, Treatment 2 = CT scan, Treatment 3 = Allergy Meds",
-"Uncontrollable Bleeding, Treatment 1 = Direct pressure and surgical repair, Treatment 2 = Ice Cream, Treatment 3 = Blood Transfusion",
-"Unresponsive, Treatment 1 = IV access, Treatment 2 = Water, Treatment 3 = Airway support and oxygen",
-"Trouble Breathing, Treatment 1 = Oxygen and bronchodilator, Treatment 2, Steroids, Treatment 3 = Heating pad"];
+            let problemset = ["Runny Nose, \nTreatment 1 = Antibiotics, \nTreatment 2 = Antihistamine, \nTreatment 3 = Decongestant", 
+"Cough, \nTreatment 1 = Honey and fluids, \nTreatment 2 = Antibiotics, \nTreatment 3 = Cough Suppressant",
+"Seasonal Allergies, \nTreatment 1 = Antihistamine, \nTreatment 2 = Steroid nasal spray, \nTreatment 3 = Antibiotics", 
+"Skin rashes (non-rapidly spreading), \nTreatment 1 = Insulin, \nTreatment 2 = Topical steroid cream, \nTreatment 3 = Steroid Nasal Spray", 
+"Wheezing, \nTreatment 1 = Steroids, \nTreatment 2 = Ice Pack, \nTreatment 3 = Bronchodilator Inhaler",
+"Dehydration, \nTreatment 1 = IV Fluids, \nTreatment 2 = Oral rehydration, \nTreatment 3 = Cough Syrup",
+"Eye Irritation, \nTreatment 1 = Ear Drops, \nTreatment 2 = Saline Irrigation, \nTreatment 3 = Artificial Tears",
+"Minor Cuts (stitches required), \nTreatment 1 = Sterile Dressing, \nTreatment 2 = Antacid, \nTreatment 3 = Clean and suture",
+ "Sprains, \nTreatment 1 = RICE protocol, \nTreatment 2 = Ankle Brace, \nTreatment 3 = Antibiotics",
+ "Sinus Pain, \nTreatment 1 = Chemotherapy, \nTreatment 2 = Decongestant, \nTreatment 3 = Nasal Steroid",
+ "Vomiting (no severe dehydration), \nTreatment 1 = Oral Fluids, \nTreatment 2 = Cast, \nTreatment 3 = Antiemetic",
+"Diarrhea, \nTreatment 1 = Oral Rehydration, \nTreatment 2 = Anti-Diarrheal, \nTreatment 3 = Inhaler",
+"Minor Burns, \nTreatment 1 = Cough Drops, \nTreatment 2 = Cool water and dressing, \nTreatment 3 = Silver Cream",
+"Urinary Tract Infection, \nTreatment 1 = Urine Culture, \nTreatment 2 = Ice Pack, \nTreatment 3 = Antibiotics",
+"Fever (>103F), \nTreatment 1 = IV fluids and antipyretic, \nTreatment 2 = Blood tests, \nTreatment 3 = Bandage",
+"Worst headache ever, \nTreatment 1 = Cough Syrup, \nTreatment 2 = CT scan, \nTreatment 3 = Pain control",
+"Broken Bones (visible), \nTreatment 1 = Pain control, \nTreatment 2 = Antihistamine, \nTreatment 3 = Inmobilize and X-ray",
+"Face Drooping, Arm Weakness, Speech Difficulty, \nTreatment 1 = Stroke protocol tPA eval, \nTreatment 2 = CT scan, \nTreatment 3 = Allergy Meds",
+"Uncontrollable Bleeding, \nTreatment 1 = Direct pressure and surgical repair, \nTreatment 2 = Ice Cream, \nTreatment 3 = Blood Transfusion",
+"Unresponsive, \nTreatment 1 = IV access, \nTreatment 2 = Water, \nTreatment 3 = Airway support and oxygen",
+"Trouble Breathing, \nTreatment 1 = Oxygen and bronchodilator, \nTreatment 2 = Steroids, \nTreatment 3 = Heating pad"];
             this.problem3 = Phaser.Math.RND.pick(problemset);
         }
         });
       }
       else if (this.key2.isDown){
+        this.patient3Label.setText("Treatment Done!");
         if (this.problemsev3 ===2){
           this.score+=5;
-          this.scoreLabel.setText("score: " + this.score);
+          this.scoreLabel.setText("Score: " + this.score);
         }
         if (this.problemsevs3 ===2){
           this.score += 2;
-          this.scoreLabel.setText("score: " + this.score);
+          this.scoreLabel.setText("Score: " + this.score);
         }
         this.patient3.destroy();
         this.time.addEvent({
           delay: 8000,
           callback: () => {
-            this.patient3 = this.physics.add.sprite(this.game.config.width/2, this.game.config.height/2-150, "patient3");
+            this.patient3 = this.physics.add.sprite(this.game.config.width/2-230, this.game.config.height/2-150, "patient3");
+            this.patient3.setScale(1.5);
             this.patient3Label.setText("Problem Unknown");
-            let problemset = ["Runny Nose, Treatment 1 = Antibiotics, Treatment 2 = Antihistamine, Treatment 3 = Decongestant", 
-"Cough, Treatment 1 = Honey and fluids, Treatment 2 = Antibiotics, Treatment 3 = Cough Suppressant",
-"Seasonal Allergies, Treatment 1 = Antihistamine, Treatment 2 = Steroid nasal spray, Treatment 3 = Antibiotics", 
-"Skin rashes (non-rapidly spreading), Treatment 1 = Insulin, Treatment 2 = Topical steroid cream, Treatment 3 = Steroid Nasal Spray", 
-"Wheezing, Treatment 1 = Steroids, Treatment 2 = Ice Pack, Treatment 3 = Bronchodilator Inhaler",
-"Dehydration, Treatment 1 = IV Fluids, Treatment 2 = Oral rehydration, Treatment 3 = Cough Syrup",
-"Eye Irritation, Treatment 1 = Ear Drops, Treatment 2 = Saline Irrigation, Treatment 3 = Artificial Tears",
-"Minor Cuts (stitches required), Treatment 1 = Sterile Dressing, Treatment 2 = Antacid, Treatment 3 = Clean and suture",
- "Sprains, Treatment 1 = RICE protocol, Treatment 2 = Ankle Brace, Treatment 3 = Antibiotics",
- "Sinus Pain, Treatment 1 = Chemotherapy, Treatment 2 = Decongestant, Treatment 3 = Nasal Steroid",
- "Vomiting (no severe dehydration), Treatment 1 = Oral Fluids, Treatment 2 = Cast, Treatment 3 = Antiemetic",
-"Diarrhea, Treatment 1 = Oral Rehydration, Treatment 2 = Anti-Diarrheal, Treatment 3 = Inhaler",
-"Minor Burns, Treatment 1 = Cough Drops, Treatment 2 = Cool water and dressing, Treatment 3 = Silver Cream",
-"Urinary Tract Infection, Treatment 1 = Urine Culture, Treatment 2 = Ice Pack, Treatment 3 = Antibiotics",
-"Fever (>103F), Treatment 1 = IV fluids and antipyretic, Treatment 2 = Blood tests, Treatment 3 = Bandage",
-"Worst headache ever, Treatment 1 = Cough Syrup, Treatment 2 = CT scan, Treatment 3 = Pain control",
-"Broken Bones (visible), Treatment 1 = Pain control, Treatment 2 = Antihistamine, Treatment 3 = Inmobilize and X-ray",
-"Face Drooping, Arm Weakness, Speech Difficulty, Treatment 1 = Stroke protocol tPA eval, Treatment 2 = CT scan, Treatment 3 = Allergy Meds",
-"Uncontrollable Bleeding, Treatment 1 = Direct pressure and surgical repair, Treatment 2 = Ice Cream, Treatment 3 = Blood Transfusion",
-"Unresponsive, Treatment 1 = IV access, Treatment 2 = Water, Treatment 3 = Airway support and oxygen",
-"Trouble Breathing, Treatment 1 = Oxygen and bronchodilator, Treatment 2, Steroids, Treatment 3 = Heating pad"];
+            let problemset = ["Runny Nose, \nTreatment 1 = Antibiotics, \nTreatment 2 = Antihistamine, \nTreatment 3 = Decongestant", 
+"Cough, \nTreatment 1 = Honey and fluids, \nTreatment 2 = Antibiotics, \nTreatment 3 = Cough Suppressant",
+"Seasonal Allergies, \nTreatment 1 = Antihistamine, \nTreatment 2 = Steroid nasal spray, \nTreatment 3 = Antibiotics", 
+"Skin rashes (non-rapidly spreading), \nTreatment 1 = Insulin, \nTreatment 2 = Topical steroid cream, \nTreatment 3 = Steroid Nasal Spray", 
+"Wheezing, \nTreatment 1 = Steroids, \nTreatment 2 = Ice Pack, \nTreatment 3 = Bronchodilator Inhaler",
+"Dehydration, \nTreatment 1 = IV Fluids, \nTreatment 2 = Oral rehydration, \nTreatment 3 = Cough Syrup",
+"Eye Irritation, \nTreatment 1 = Ear Drops, \nTreatment 2 = Saline Irrigation, \nTreatment 3 = Artificial Tears",
+"Minor Cuts (stitches required), \nTreatment 1 = Sterile Dressing, \nTreatment 2 = Antacid, \nTreatment 3 = Clean and suture",
+ "Sprains, \nTreatment 1 = RICE protocol, \nTreatment 2 = Ankle Brace, \nTreatment 3 = Antibiotics",
+ "Sinus Pain, \nTreatment 1 = Chemotherapy, \nTreatment 2 = Decongestant, \nTreatment 3 = Nasal Steroid",
+ "Vomiting (no severe dehydration), \nTreatment 1 = Oral Fluids, \nTreatment 2 = Cast, \nTreatment 3 = Antiemetic",
+"Diarrhea, \nTreatment 1 = Oral Rehydration, \nTreatment 2 = Anti-Diarrheal, \nTreatment 3 = Inhaler",
+"Minor Burns, \nTreatment 1 = Cough Drops, \nTreatment 2 = Cool water and dressing, \nTreatment 3 = Silver Cream",
+"Urinary Tract Infection, \nTreatment 1 = Urine Culture, \nTreatment 2 = Ice Pack, \nTreatment 3 = Antibiotics",
+"Fever (>103F), \nTreatment 1 = IV fluids and antipyretic, \nTreatment 2 = Blood tests, \nTreatment 3 = Bandage",
+"Worst headache ever, \nTreatment 1 = Cough Syrup, \nTreatment 2 = CT scan, \nTreatment 3 = Pain control",
+"Broken Bones (visible), \nTreatment 1 = Pain control, \nTreatment 2 = Antihistamine, \nTreatment 3 = Inmobilize and X-ray",
+"Face Drooping, Arm Weakness, Speech Difficulty, \nTreatment 1 = Stroke protocol tPA eval, \nTreatment 2 = CT scan, \nTreatment 3 = Allergy Meds",
+"Uncontrollable Bleeding, \nTreatment 1 = Direct pressure and surgical repair, \nTreatment 2 = Ice Cream, \nTreatment 3 = Blood Transfusion",
+"Unresponsive, \nTreatment 1 = IV access, \nTreatment 2 = Water, \nTreatment 3 = Airway support and oxygen",
+"Trouble Breathing, \nTreatment 1 = Oxygen and bronchodilator, \nTreatment 2 = Steroids, \nTreatment 3 = Heating pad"];
             this.problem3 = Phaser.Math.RND.pick(problemset);
         }
         });
       }
       else if (this.key3.isDown){
+        this.patient3Label.setText("Treatment Done!");
         if (this.problemsev3 ===3){
           this.score+=5;
-          this.scoreLabel.setText("score: " + this.score);
+          this.scoreLabel.setText("Score: " + this.score);
         }
         if (this.problemsevs3 ===3){
           this.score += 2;
-          this.scoreLabel.setText("score: " + this.score);
+          this.scoreLabel.setText("Score: " + this.score);
         }
         this.patient3.destroy();
         this.time.addEvent({
           delay: 8000,
           callback: () => {
-            this.patient3 = this.physics.add.sprite(this.game.config.width/2, this.game.config.height/2-150, "patient3");
+            this.patient3 = this.physics.add.sprite(this.game.config.width/2-230, this.game.config.height/2-150, "patient3");
+            this.patient3.setScale(1.5);
             this.patient3Label.setText("Problem Unknown");
-            let problemset = ["Runny Nose, Treatment 1 = Antibiotics, Treatment 2 = Antihistamine, Treatment 3 = Decongestant", 
-"Cough, Treatment 1 = Honey and fluids, Treatment 2 = Antibiotics, Treatment 3 = Cough Suppressant",
-"Seasonal Allergies, Treatment 1 = Antihistamine, Treatment 2 = Steroid nasal spray, Treatment 3 = Antibiotics", 
-"Skin rashes (non-rapidly spreading), Treatment 1 = Insulin, Treatment 2 = Topical steroid cream, Treatment 3 = Steroid Nasal Spray", 
-"Wheezing, Treatment 1 = Steroids, Treatment 2 = Ice Pack, Treatment 3 = Bronchodilator Inhaler",
-"Dehydration, Treatment 1 = IV Fluids, Treatment 2 = Oral rehydration, Treatment 3 = Cough Syrup",
-"Eye Irritation, Treatment 1 = Ear Drops, Treatment 2 = Saline Irrigation, Treatment 3 = Artificial Tears",
-"Minor Cuts (stitches required), Treatment 1 = Sterile Dressing, Treatment 2 = Antacid, Treatment 3 = Clean and suture",
- "Sprains, Treatment 1 = RICE protocol, Treatment 2 = Ankle Brace, Treatment 3 = Antibiotics",
- "Sinus Pain, Treatment 1 = Chemotherapy, Treatment 2 = Decongestant, Treatment 3 = Nasal Steroid",
- "Vomiting (no severe dehydration), Treatment 1 = Oral Fluids, Treatment 2 = Cast, Treatment 3 = Antiemetic",
-"Diarrhea, Treatment 1 = Oral Rehydration, Treatment 2 = Anti-Diarrheal, Treatment 3 = Inhaler",
-"Minor Burns, Treatment 1 = Cough Drops, Treatment 2 = Cool water and dressing, Treatment 3 = Silver Cream",
-"Urinary Tract Infection, Treatment 1 = Urine Culture, Treatment 2 = Ice Pack, Treatment 3 = Antibiotics",
-"Fever (>103F), Treatment 1 = IV fluids and antipyretic, Treatment 2 = Blood tests, Treatment 3 = Bandage",
-"Worst headache ever, Treatment 1 = Cough Syrup, Treatment 2 = CT scan, Treatment 3 = Pain control",
-"Broken Bones (visible), Treatment 1 = Pain control, Treatment 2 = Antihistamine, Treatment 3 = Inmobilize and X-ray",
-"Face Drooping, Arm Weakness, Speech Difficulty, Treatment 1 = Stroke protocol tPA eval, Treatment 2 = CT scan, Treatment 3 = Allergy Meds",
-"Uncontrollable Bleeding, Treatment 1 = Direct pressure and surgical repair, Treatment 2 = Ice Cream, Treatment 3 = Blood Transfusion",
-"Unresponsive, Treatment 1 = IV access, Treatment 2 = Water, Treatment 3 = Airway support and oxygen",
-"Trouble Breathing, Treatment 1 = Oxygen and bronchodilator, Treatment 2, Steroids, Treatment 3 = Heating pad"];
+            let problemset = ["Runny Nose, \nTreatment 1 = Antibiotics, \nTreatment 2 = Antihistamine, \nTreatment 3 = Decongestant", 
+"Cough, \nTreatment 1 = Honey and fluids, \nTreatment 2 = Antibiotics, \nTreatment 3 = Cough Suppressant",
+"Seasonal Allergies, \nTreatment 1 = Antihistamine, \nTreatment 2 = Steroid nasal spray, \nTreatment 3 = Antibiotics", 
+"Skin rashes (non-rapidly spreading), \nTreatment 1 = Insulin, \nTreatment 2 = Topical steroid cream, \nTreatment 3 = Steroid Nasal Spray", 
+"Wheezing, \nTreatment 1 = Steroids, \nTreatment 2 = Ice Pack, \nTreatment 3 = Bronchodilator Inhaler",
+"Dehydration, \nTreatment 1 = IV Fluids, \nTreatment 2 = Oral rehydration, \nTreatment 3 = Cough Syrup",
+"Eye Irritation, \nTreatment 1 = Ear Drops, \nTreatment 2 = Saline Irrigation, \nTreatment 3 = Artificial Tears",
+"Minor Cuts (stitches required), \nTreatment 1 = Sterile Dressing, \nTreatment 2 = Antacid, \nTreatment 3 = Clean and suture",
+ "Sprains, \nTreatment 1 = RICE protocol, \nTreatment 2 = Ankle Brace, \nTreatment 3 = Antibiotics",
+ "Sinus Pain, \nTreatment 1 = Chemotherapy, \nTreatment 2 = Decongestant, \nTreatment 3 = Nasal Steroid",
+ "Vomiting (no severe dehydration), \nTreatment 1 = Oral Fluids, \nTreatment 2 = Cast, \nTreatment 3 = Antiemetic",
+"Diarrhea, \nTreatment 1 = Oral Rehydration, \nTreatment 2 = Anti-Diarrheal, \nTreatment 3 = Inhaler",
+"Minor Burns, \nTreatment 1 = Cough Drops, \nTreatment 2 = Cool water and dressing, \nTreatment 3 = Silver Cream",
+"Urinary Tract Infection, \nTreatment 1 = Urine Culture, \nTreatment 2 = Ice Pack, \nTreatment 3 = Antibiotics",
+"Fever (>103F), \nTreatment 1 = IV fluids and antipyretic, \nTreatment 2 = Blood tests, \nTreatment 3 = Bandage",
+"Worst headache ever, \nTreatment 1 = Cough Syrup, \nTreatment 2 = CT scan, \nTreatment 3 = Pain control",
+"Broken Bones (visible), \nTreatment 1 = Pain control, \nTreatment 2 = Antihistamine, \nTreatment 3 = Inmobilize and X-ray",
+"Face Drooping, Arm Weakness, Speech Difficulty, \nTreatment 1 = Stroke protocol tPA eval, \nTreatment 2 = CT scan, \nTreatment 3 = Allergy Meds",
+"Uncontrollable Bleeding, \nTreatment 1 = Direct pressure and surgical repair, \nTreatment 2 = Ice Cream, \nTreatment 3 = Blood Transfusion",
+"Unresponsive, \nTreatment 1 = IV access, \nTreatment 2 = Water, \nTreatment 3 = Airway support and oxygen",
+"Trouble Breathing, \nTreatment 1 = Oxygen and bronchodilator, \nTreatment 2 = Steroids, \nTreatment 3 = Heating pad"];
             this.problem3 = Phaser.Math.RND.pick(problemset);
         }
         });
@@ -606,122 +769,128 @@ class GameScene extends Phaser.Scene {
     if (this.physics.overlap(this.player, this.patient4)){
       this.patient4Label.setText("Problem: " + this.problem4);
       if (this.key1.isDown){
+        this.patient4Label.setText("Treatment Done!");
 
         if (this.problemsev4 ===1){
           this.score += 5;
-          this.scoreLabel.setText("score: " + this.score);
+          this.scoreLabel.setText("Score: " + this.score);
         }
         if (this.problemsevs4 ===1){
           this.score += 2;
-          this.scoreLabel.setText("score: " + this.score);
+          this.scoreLabel.setText("Score: " + this.score);
         }
         this.patient4.destroy();
         this.time.addEvent({
           delay: 8000,
           callback: () => {
-            this.patient4 = this.physics.add.sprite(this.game.config.width/2, this.game.config.height/2+150, "patient4");
+            this.patient4 = this.physics.add.sprite(this.game.config.width/2+230, this.game.config.height/2+150, "patient4");
+            this.patient4.setScale(1.5);
             this.patient4Label.setText("Problem Unknown");
-            let problemset = ["Runny Nose, Treatment 1 = Antibiotics, Treatment 2 = Antihistamine, Treatment 3 = Decongestant", 
-"Cough, Treatment 1 = Honey and fluids, Treatment 2 = Antibiotics, Treatment 3 = Cough Suppressant",
-"Seasonal Allergies, Treatment 1 = Antihistamine, Treatment 2 = Steroid nasal spray, Treatment 3 = Antibiotics", 
-"Skin rashes (non-rapidly spreading), Treatment 1 = Insulin, Treatment 2 = Topical steroid cream, Treatment 3 = Steroid Nasal Spray", 
-"Wheezing, Treatment 1 = Steroids, Treatment 2 = Ice Pack, Treatment 3 = Bronchodilator Inhaler",
-"Dehydration, Treatment 1 = IV Fluids, Treatment 2 = Oral rehydration, Treatment 3 = Cough Syrup",
-"Eye Irritation, Treatment 1 = Ear Drops, Treatment 2 = Saline Irrigation, Treatment 3 = Artificial Tears",
-"Minor Cuts (stitches required), Treatment 1 = Sterile Dressing, Treatment 2 = Antacid, Treatment 3 = Clean and suture",
- "Sprains, Treatment 1 = RICE protocol, Treatment 2 = Ankle Brace, Treatment 3 = Antibiotics",
- "Sinus Pain, Treatment 1 = Chemotherapy, Treatment 2 = Decongestant, Treatment 3 = Nasal Steroid",
- "Vomiting (no severe dehydration), Treatment 1 = Oral Fluids, Treatment 2 = Cast, Treatment 3 = Antiemetic",
-"Diarrhea, Treatment 1 = Oral Rehydration, Treatment 2 = Anti-Diarrheal, Treatment 3 = Inhaler",
-"Minor Burns, Treatment 1 = Cough Drops, Treatment 2 = Cool water and dressing, Treatment 3 = Silver Cream",
-"Urinary Tract Infection, Treatment 1 = Urine Culture, Treatment 2 = Ice Pack, Treatment 3 = Antibiotics",
-"Fever (>103F), Treatment 1 = IV fluids and antipyretic, Treatment 2 = Blood tests, Treatment 3 = Bandage",
-"Worst headache ever, Treatment 1 = Cough Syrup, Treatment 2 = CT scan, Treatment 3 = Pain control",
-"Broken Bones (visible), Treatment 1 = Pain control, Treatment 2 = Antihistamine, Treatment 3 = Inmobilize and X-ray",
-"Face Drooping, Arm Weakness, Speech Difficulty, Treatment 1 = Stroke protocol tPA eval, Treatment 2 = CT scan, Treatment 3 = Allergy Meds",
-"Uncontrollable Bleeding, Treatment 1 = Direct pressure and surgical repair, Treatment 2 = Ice Cream, Treatment 3 = Blood Transfusion",
-"Unresponsive, Treatment 1 = IV access, Treatment 2 = Water, Treatment 3 = Airway support and oxygen",
-"Trouble Breathing, Treatment 1 = Oxygen and bronchodilator, Treatment 2, Steroids, Treatment 3 = Heating pad"];
+            let problemset = ["Runny Nose, \nTreatment 1 = Antibiotics, \nTreatment 2 = Antihistamine, \nTreatment 3 = Decongestant", 
+"Cough, \nTreatment 1 = Honey and fluids, \nTreatment 2 = Antibiotics, \nTreatment 3 = Cough Suppressant",
+"Seasonal Allergies, \nTreatment 1 = Antihistamine, \nTreatment 2 = Steroid nasal spray, \nTreatment 3 = Antibiotics", 
+"Skin rashes (non-rapidly spreading), \nTreatment 1 = Insulin, \nTreatment 2 = Topical steroid cream, \nTreatment 3 = Steroid Nasal Spray", 
+"Wheezing, \nTreatment 1 = Steroids, \nTreatment 2 = Ice Pack, \nTreatment 3 = Bronchodilator Inhaler",
+"Dehydration, \nTreatment 1 = IV Fluids, \nTreatment 2 = Oral rehydration, \nTreatment 3 = Cough Syrup",
+"Eye Irritation, \nTreatment 1 = Ear Drops, \nTreatment 2 = Saline Irrigation, \nTreatment 3 = Artificial Tears",
+"Minor Cuts (stitches required), \nTreatment 1 = Sterile Dressing, \nTreatment 2 = Antacid, \nTreatment 3 = Clean and suture",
+ "Sprains, \nTreatment 1 = RICE protocol, \nTreatment 2 = Ankle Brace, \nTreatment 3 = Antibiotics",
+ "Sinus Pain, \nTreatment 1 = Chemotherapy, \nTreatment 2 = Decongestant, \nTreatment 3 = Nasal Steroid",
+ "Vomiting (no severe dehydration), \nTreatment 1 = Oral Fluids, \nTreatment 2 = Cast, \nTreatment 3 = Antiemetic",
+"Diarrhea, \nTreatment 1 = Oral Rehydration, \nTreatment 2 = Anti-Diarrheal, \nTreatment 3 = Inhaler",
+"Minor Burns, \nTreatment 1 = Cough Drops, \nTreatment 2 = Cool water and dressing, \nTreatment 3 = Silver Cream",
+"Urinary Tract Infection, \nTreatment 1 = Urine Culture, \nTreatment 2 = Ice Pack, \nTreatment 3 = Antibiotics",
+"Fever (>103F), \nTreatment 1 = IV fluids and antipyretic, \nTreatment 2 = Blood tests, \nTreatment 3 = Bandage",
+"Worst headache ever, \nTreatment 1 = Cough Syrup, \nTreatment 2 = CT scan, \nTreatment 3 = Pain control",
+"Broken Bones (visible), \nTreatment 1 = Pain control, \nTreatment 2 = Antihistamine, \nTreatment 3 = Inmobilize and X-ray",
+"Face Drooping, Arm Weakness, Speech Difficulty, \nTreatment 1 = Stroke protocol tPA eval, \nTreatment 2 = CT scan, \nTreatment 3 = Allergy Meds",
+"Uncontrollable Bleeding, \nTreatment 1 = Direct pressure and surgical repair, \nTreatment 2 = Ice Cream, \nTreatment 3 = Blood Transfusion",
+"Unresponsive, \nTreatment 1 = IV access, \nTreatment 2 = Water, \nTreatment 3 = Airway support and oxygen",
+"Trouble Breathing, \nTreatment 1 = Oxygen and bronchodilator, \nTreatment 2 = Steroids, \nTreatment 3 = Heating pad"];
             this.problem4 = Phaser.Math.RND.pick(problemset);
         }
         });
       }
       else if (this.key2.isDown){
+        this.patient4Label.setText("Treatment Done!");
         if (this.problemsev4 ===2){
           this.score+=5;
-          this.scoreLabel.setText("score: " + this.score);
+          this.scoreLabel.setText("Score: " + this.score);
         }
         if (this.problemsevs4 ===2){
           this.score += 2;
-          this.scoreLabel.setText("score: " + this.score);
+          this.scoreLabel.setText("Score: " + this.score);
         }
         this.patient4.destroy();
         this.time.addEvent({
           delay: 8000,
           callback: () => {
-            this.patient4 = this.physics.add.sprite(this.game.config.width/2, this.game.config.height/2+150, "patient4");
+            this.patient4 = this.physics.add.sprite(this.game.config.width/2+230, this.game.config.height/2+150, "patient4");
+            this.patient4.setScale(1.5);
             this.patient4Label.setText("Problem Unknown");
-            let problemset = ["Runny Nose, Treatment 1 = Antibiotics, Treatment 2 = Antihistamine, Treatment 3 = Decongestant", 
-"Cough, Treatment 1 = Honey and fluids, Treatment 2 = Antibiotics, Treatment 3 = Cough Suppressant",
-"Seasonal Allergies, Treatment 1 = Antihistamine, Treatment 2 = Steroid nasal spray, Treatment 3 = Antibiotics", 
-"Skin rashes (non-rapidly spreading), Treatment 1 = Insulin, Treatment 2 = Topical steroid cream, Treatment 3 = Steroid Nasal Spray", 
-"Wheezing, Treatment 1 = Steroids, Treatment 2 = Ice Pack, Treatment 3 = Bronchodilator Inhaler",
-"Dehydration, Treatment 1 = IV Fluids, Treatment 2 = Oral rehydration, Treatment 3 = Cough Syrup",
-"Eye Irritation, Treatment 1 = Ear Drops, Treatment 2 = Saline Irrigation, Treatment 3 = Artificial Tears",
-"Minor Cuts (stitches required), Treatment 1 = Sterile Dressing, Treatment 2 = Antacid, Treatment 3 = Clean and suture",
- "Sprains, Treatment 1 = RICE protocol, Treatment 2 = Ankle Brace, Treatment 3 = Antibiotics",
- "Sinus Pain, Treatment 1 = Chemotherapy, Treatment 2 = Decongestant, Treatment 3 = Nasal Steroid",
- "Vomiting (no severe dehydration), Treatment 1 = Oral Fluids, Treatment 2 = Cast, Treatment 3 = Antiemetic",
-"Diarrhea, Treatment 1 = Oral Rehydration, Treatment 2 = Anti-Diarrheal, Treatment 3 = Inhaler",
-"Minor Burns, Treatment 1 = Cough Drops, Treatment 2 = Cool water and dressing, Treatment 3 = Silver Cream",
-"Urinary Tract Infection, Treatment 1 = Urine Culture, Treatment 2 = Ice Pack, Treatment 3 = Antibiotics",
-"Fever (>103F), Treatment 1 = IV fluids and antipyretic, Treatment 2 = Blood tests, Treatment 3 = Bandage",
-"Worst headache ever, Treatment 1 = Cough Syrup, Treatment 2 = CT scan, Treatment 3 = Pain control",
-"Broken Bones (visible), Treatment 1 = Pain control, Treatment 2 = Antihistamine, Treatment 3 = Inmobilize and X-ray",
-"Face Drooping, Arm Weakness, Speech Difficulty, Treatment 1 = Stroke protocol tPA eval, Treatment 2 = CT scan, Treatment 3 = Allergy Meds",
-"Uncontrollable Bleeding, Treatment 1 = Direct pressure and surgical repair, Treatment 2 = Ice Cream, Treatment 3 = Blood Transfusion",
-"Unresponsive, Treatment 1 = IV access, Treatment 2 = Water, Treatment 3 = Airway support and oxygen",
-"Trouble Breathing, Treatment 1 = Oxygen and bronchodilator, Treatment 2, Steroids, Treatment 3 = Heating pad"];
+            let problemset = ["Runny Nose, \nTreatment 1 = Antibiotics, \nTreatment 2 = Antihistamine, \nTreatment 3 = Decongestant", 
+"Cough, \nTreatment 1 = Honey and fluids, \nTreatment 2 = Antibiotics, \nTreatment 3 = Cough Suppressant",
+"Seasonal Allergies, \nTreatment 1 = Antihistamine, \nTreatment 2 = Steroid nasal spray, \nTreatment 3 = Antibiotics", 
+"Skin rashes (non-rapidly spreading), \nTreatment 1 = Insulin, \nTreatment 2 = Topical steroid cream, \nTreatment 3 = Steroid Nasal Spray", 
+"Wheezing, \nTreatment 1 = Steroids, \nTreatment 2 = Ice Pack, \nTreatment 3 = Bronchodilator Inhaler",
+"Dehydration, \nTreatment 1 = IV Fluids, \nTreatment 2 = Oral rehydration, \nTreatment 3 = Cough Syrup",
+"Eye Irritation, \nTreatment 1 = Ear Drops, \nTreatment 2 = Saline Irrigation, \nTreatment 3 = Artificial Tears",
+"Minor Cuts (stitches required), \nTreatment 1 = Sterile Dressing, \nTreatment 2 = Antacid, \nTreatment 3 = Clean and suture",
+ "Sprains, \nTreatment 1 = RICE protocol, \nTreatment 2 = Ankle Brace, \nTreatment 3 = Antibiotics",
+ "Sinus Pain, \nTreatment 1 = Chemotherapy, \nTreatment 2 = Decongestant, \nTreatment 3 = Nasal Steroid",
+ "Vomiting (no severe dehydration), \nTreatment 1 = Oral Fluids, \nTreatment 2 = Cast, \nTreatment 3 = Antiemetic",
+"Diarrhea, \nTreatment 1 = Oral Rehydration, \nTreatment 2 = Anti-Diarrheal, \nTreatment 3 = Inhaler",
+"Minor Burns, \nTreatment 1 = Cough Drops, \nTreatment 2 = Cool water and dressing, \nTreatment 3 = Silver Cream",
+"Urinary Tract Infection, \nTreatment 1 = Urine Culture, \nTreatment 2 = Ice Pack, \nTreatment 3 = Antibiotics",
+"Fever (>103F), \nTreatment 1 = IV fluids and antipyretic, \nTreatment 2 = Blood tests, \nTreatment 3 = Bandage",
+"Worst headache ever, \nTreatment 1 = Cough Syrup, \nTreatment 2 = CT scan, \nTreatment 3 = Pain control",
+"Broken Bones (visible), \nTreatment 1 = Pain control, \nTreatment 2 = Antihistamine, \nTreatment 3 = Inmobilize and X-ray",
+"Face Drooping, Arm Weakness, Speech Difficulty, \nTreatment 1 = Stroke protocol tPA eval, \nTreatment 2 = CT scan, \nTreatment 3 = Allergy Meds",
+"Uncontrollable Bleeding, \nTreatment 1 = Direct pressure and surgical repair, \nTreatment 2 = Ice Cream, \nTreatment 3 = Blood Transfusion",
+"Unresponsive, \nTreatment 1 = IV access, \nTreatment 2 = Water, \nTreatment 3 = Airway support and oxygen",
+"Trouble Breathing, \nTreatment 1 = Oxygen and bronchodilator, \nTreatment 2 = Steroids, \nTreatment 3 = Heating pad"];
             this.problem4 = Phaser.Math.RND.pick(problemset);
         }
         });
       }
       else if (this.key3.isDown){
+        this.patient4Label.setText("Treatment Done!");
         if (this.problemsev4 ===3){
           this.score+=5;
-          this.scoreLabel.setText("score: " + this.score);
+          this.scoreLabel.setText("Score: " + this.score);
         }
         if (this.problemsevs4 ===3){
           this.score += 2;
-          this.scoreLabel.setText("score: " + this.score);
+          this.scoreLabel.setText("Score: " + this.score);
         }
         this.patient4.destroy();
         this.time.addEvent({
           delay: 8000,
           callback: () => {
-            this.patient4 = this.physics.add.sprite(this.game.config.width/2, this.game.config.height/2+150, "patient4");
+            this.patient4 = this.physics.add.sprite(this.game.config.width/2+230, this.game.config.height/2+150, "patient4");
+            this.patient4.setScale(1.5);
             this.patient4Label.setText("Problem Unknown");
-            let problemset = ["Runny Nose, Treatment 1 = Antibiotics, Treatment 2 = Antihistamine, Treatment 3 = Decongestant", 
-"Cough, Treatment 1 = Honey and fluids, Treatment 2 = Antibiotics, Treatment 3 = Cough Suppressant",
-"Seasonal Allergies, Treatment 1 = Antihistamine, Treatment 2 = Steroid nasal spray, Treatment 3 = Antibiotics", 
-"Skin rashes (non-rapidly spreading), Treatment 1 = Insulin, Treatment 2 = Topical steroid cream, Treatment 3 = Steroid Nasal Spray", 
-"Wheezing, Treatment 1 = Steroids, Treatment 2 = Ice Pack, Treatment 3 = Bronchodilator Inhaler",
-"Dehydration, Treatment 1 = IV Fluids, Treatment 2 = Oral rehydration, Treatment 3 = Cough Syrup",
-"Eye Irritation, Treatment 1 = Ear Drops, Treatment 2 = Saline Irrigation, Treatment 3 = Artificial Tears",
-"Minor Cuts (stitches required), Treatment 1 = Sterile Dressing, Treatment 2 = Antacid, Treatment 3 = Clean and suture",
- "Sprains, Treatment 1 = RICE protocol, Treatment 2 = Ankle Brace, Treatment 3 = Antibiotics",
- "Sinus Pain, Treatment 1 = Chemotherapy, Treatment 2 = Decongestant, Treatment 3 = Nasal Steroid",
- "Vomiting (no severe dehydration), Treatment 1 = Oral Fluids, Treatment 2 = Cast, Treatment 3 = Antiemetic",
-"Diarrhea, Treatment 1 = Oral Rehydration, Treatment 2 = Anti-Diarrheal, Treatment 3 = Inhaler",
-"Minor Burns, Treatment 1 = Cough Drops, Treatment 2 = Cool water and dressing, Treatment 3 = Silver Cream",
-"Urinary Tract Infection, Treatment 1 = Urine Culture, Treatment 2 = Ice Pack, Treatment 3 = Antibiotics",
-"Fever (>103F), Treatment 1 = IV fluids and antipyretic, Treatment 2 = Blood tests, Treatment 3 = Bandage",
-"Worst headache ever, Treatment 1 = Cough Syrup, Treatment 2 = CT scan, Treatment 3 = Pain control",
-"Broken Bones (visible), Treatment 1 = Pain control, Treatment 2 = Antihistamine, Treatment 3 = Inmobilize and X-ray",
-"Face Drooping, Arm Weakness, Speech Difficulty, Treatment 1 = Stroke protocol tPA eval, Treatment 2 = CT scan, Treatment 3 = Allergy Meds",
-"Uncontrollable Bleeding, Treatment 1 = Direct pressure and surgical repair, Treatment 2 = Ice Cream, Treatment 3 = Blood Transfusion",
-"Unresponsive, Treatment 1 = IV access, Treatment 2 = Water, Treatment 3 = Airway support and oxygen",
-"Trouble Breathing, Treatment 1 = Oxygen and bronchodilator, Treatment 2, Steroids, Treatment 3 = Heating pad"];
+            let problemset = ["Runny Nose, \nTreatment 1 = Antibiotics, \nTreatment 2 = Antihistamine, \nTreatment 3 = Decongestant", 
+"Cough, \nTreatment 1 = Honey and fluids, \nTreatment 2 = Antibiotics, \nTreatment 3 = Cough Suppressant",
+"Seasonal Allergies, \nTreatment 1 = Antihistamine, \nTreatment 2 = Steroid nasal spray, \nTreatment 3 = Antibiotics", 
+"Skin rashes (non-rapidly spreading), \nTreatment 1 = Insulin, \nTreatment 2 = Topical steroid cream, \nTreatment 3 = Steroid Nasal Spray", 
+"Wheezing, \nTreatment 1 = Steroids, \nTreatment 2 = Ice Pack, \nTreatment 3 = Bronchodilator Inhaler",
+"Dehydration, \nTreatment 1 = IV Fluids, \nTreatment 2 = Oral rehydration, \nTreatment 3 = Cough Syrup",
+"Eye Irritation, \nTreatment 1 = Ear Drops, \nTreatment 2 = Saline Irrigation, \nTreatment 3 = Artificial Tears",
+"Minor Cuts (stitches required), \nTreatment 1 = Sterile Dressing, \nTreatment 2 = Antacid, \nTreatment 3 = Clean and suture",
+ "Sprains, \nTreatment 1 = RICE protocol, \nTreatment 2 = Ankle Brace, \nTreatment 3 = Antibiotics",
+ "Sinus Pain, \nTreatment 1 = Chemotherapy, \nTreatment 2 = Decongestant, \nTreatment 3 = Nasal Steroid",
+ "Vomiting (no severe dehydration), \nTreatment 1 = Oral Fluids, \nTreatment 2 = Cast, \nTreatment 3 = Antiemetic",
+"Diarrhea, \nTreatment 1 = Oral Rehydration, \nTreatment 2 = Anti-Diarrheal, \nTreatment 3 = Inhaler",
+"Minor Burns, \nTreatment 1 = Cough Drops, \nTreatment 2 = Cool water and dressing, \nTreatment 3 = Silver Cream",
+"Urinary Tract Infection, \nTreatment 1 = Urine Culture, \nTreatment 2 = Ice Pack, \nTreatment 3 = Antibiotics",
+"Fever (>103F), \nTreatment 1 = IV fluids and antipyretic, \nTreatment 2 = Blood tests, \nTreatment 3 = Bandage",
+"Worst headache ever, \nTreatment 1 = Cough Syrup, \nTreatment 2 = CT scan, \nTreatment 3 = Pain control",
+"Broken Bones (visible), \nTreatment 1 = Pain control, \nTreatment 2 = Antihistamine, \nTreatment 3 = Inmobilize and X-ray",
+"Face Drooping, Arm Weakness, Speech Difficulty, \nTreatment 1 = Stroke protocol tPA eval, \nTreatment 2 = CT scan, \nTreatment 3 = Allergy Meds",
+"Uncontrollable Bleeding, \nTreatment 1 = Direct pressure and surgical repair, \nTreatment 2 = Ice Cream, \nTreatment 3 = Blood Transfusion",
+"Unresponsive, \nTreatment 1 = IV access, \nTreatment 2 = Water, \nTreatment 3 = Airway support and oxygen",
+"Trouble Breathing, \nTreatment 1 = Oxygen and bronchodilator, \nTreatment 2 = Steroids, \nTreatment 3 = Heating pad"];
             this.problem4 = Phaser.Math.RND.pick(problemset);
         }
         });
@@ -736,10 +905,10 @@ class GameScene extends Phaser.Scene {
       // add 5 to the score
       this.score += 5;
       // update the score label
-      this.scoreLabel.setText("score: " + this.score);
+      this.scoreLabel.setText("Score: " + this.score);
       // move the coin to a new spot
       this.moveCoin();
-      this.coinSound.play();
+
     }
   }
 
